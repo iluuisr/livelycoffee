@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lively Coffee - Café, Livros & Natureza</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <h1>☕ Lively Coffee</h1>
+</header>
+
+<button id="btn-menu"><i class="fas fa-bars"></i> MENU</button>
+<button id="cart-tab"><i class="fas fa-shopping-cart"></i> <span id="cart-count">0</span></button>
+
+<aside class="sidebar" id="sidebar">
+  <h3><i class="fas fa-compass"></i> Explorar</h3>
+  <ul>
+    <li><a href="index.html"><i class="fas fa-home"></i> Início</a></li>
+    <li><a href="cardapio.html"><i class="fas fa-mug-hot"></i> Cardápio</a></li>
+    <li><a href="livraria.html"><i class="fas fa-book"></i> Livraria</a></li>
+    <li><a href="areaverde.html"><i class="fas fa-leaf"></i> Área Verde</a></li>
+    <li><a href="sobrenos.html"><i class="fas fa-heart"></i> Sobre Nós</a></li>
+  </ul>
+  <div class="sidebar-divider"></div>
+  <ul class="sidebar-admin">
+    <li><a href="admin/index.html"><i class="fas fa-user-cog"></i> Admin</a></li>
+    <li><a href="admin/cozinha.html"><i class="fas fa-utensils"></i> Cozinha</a></li>
+  </ul>
+</aside>
+
+<main class="content">
+  <div class="hero">
+    <h2>Bem-vindo ao Lively Coffee</h2>
+    <p>Onde café especial, livros inspiradores e natureza se encontram em perfeita harmonia.</p>
+    <div class="hero-buttons">
+      <a href="cardapio.html" class="btn-home"><i class="fas fa-mug-hot"></i> Ver Cardápio</a>
+      <a href="livraria.html" class="btn-home btn-outline"><i class="fas fa-book"></i> Livraria</a>
+      <a href="areaverde.html" class="btn-home btn-outline"><i class="fas fa-tree"></i> Área Verde</a>
+    </div>
+  </div>
+
+  <div class="highlights">
+    <div class="highlight-card" onclick="location.href='cardapio.html'">
+      <i class="fas fa-mug-hot"></i>
+      <h3>Cafés Especiais</h3>
+      <p>Grãos selecionados e torra artesanal</p>
+    </div>
+    <div class="highlight-card" onclick="location.href='livraria.html'">
+      <i class="fas fa-book-open"></i>
+      <h3>Livraria</h3>
+      <p>Acervo diverso para todos os gostos</p>
+    </div>
+    <div class="highlight-card" onclick="location.href='areaverde.html'">
+      <i class="fas fa-seedling"></i>
+      <h3>Espaço Verde</h3>
+      <p>Ambiente aconchegante e relaxante</p>
+    </div>
+  </div>
+
+  <h2 class="section-title">☕ Produtos em Destaque</h2>
+  <div class="products-grid" id="products-container"></div>
+
+  <div class="features">
+    <div class="feature"><i class="fas fa-truck"></i><h4>Entrega Rápida</h4><p>Em até 40 min</p></div>
+    <div class="feature"><i class="fas fa-gift"></i><h4>Fidelidade</h4><p>Ganhe a cada 10 compras</p></div>
+    <div class="feature"><i class="fas fa-music"></i><h4>Música ao Vivo</h4><p>Aos sábados</p></div>
+    <div class="feature"><i class="fas fa-wifi"></i><h4>Wi-Fi Grátis</h4><p>Para trabalhar ou estudar</p></div>
+  </div>
+
+  <h2 class="section-title">❤️ O que dizem nossos clientes</h2>
+  <div class="testimonials">
+    <div class="testimonial"><i class="fas fa-quote-left"></i><p>"Melhor café da cidade! Ambiente perfeito para ler e relaxar."</p><h5>— Ana Silva</h5></div>
+    <div class="testimonial"><i class="fas fa-quote-left"></i><p>"Os livros são incríveis e o atendimento é nota 10!"</p><h5>— Carlos Mendes</h5></div>
+    <div class="testimonial"><i class="fas fa-quote-left"></i><p>"Adoro a área verde, lugar especial para recarregar as energias."</p><h5>— Mariana Costa</h5></div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-content">
+    <div class="footer-section"><h4 id="footer-nome">Lively Coffee</h4><p>Café, livros e natureza em um só lugar.</p><div class="social-links"><a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a><a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook"></i></a><a href="https://web.whatsapp.com" target="_blank"><i class="fab fa-whatsapp"></i></a></div></div>
+    <div class="footer-section"><h4>Horário</h4><p id="footer-horario">Seg-Sex: 08h - 22h</p></div>
+    <div class="footer-section"><h4>Contato</h4><p><i class="fas fa-phone"></i> <span id="footer-telefone">(11) 99999-9999</span></p><p><a id="footer-email-link" href="mailto:contato@livelycoffee.com" style="color: inherit; text-decoration: none;"><i class="fas fa-envelope"></i> <span id="footer-email">contato@livelycoffee.com</span></a></p></div>
+  </div>
+  <div class="copyright"><p>&copy; 2024 Lively Coffee - Todos os direitos reservados.</p></div>
+</footer>
+
+<script>
+  // Produtos em destaque (apenas 3)
+  let produtosDestaque = [
+    { id: 1, nome: "Expresso Cremoso", preco: 8.90, desc: "Café encorpado com creme aveludado", img: "images/expressocremoso.jpg" },
+    { id: 2, nome: "Capuccino Italiano", preco: 12.90, desc: "Café, leite vaporizado e espuma", img: "images/italiano-tradicional.jpg" },
+    { id: 3, nome: "Latte Macchiato", preco: 11.90, desc: "Leite cremoso com café suave", img: "images/lattemacchiato.jpg" }
+  ];
+
+  // Carregar produtos em destaque do localStorage ou API unificada
+  // Carregar produtos em destaque do localStorage ou API unificada
+  async function carregarDestaques() {
+    try {
+      const response = await fetch('data/db.json');
+      if (response.ok) {
+        const completo = await response.json();
+        if (completo && completo.produtos && completo.produtos.length > 0) {
+          produtosDestaque = completo.produtos.slice(0, 3);
+          localStorage.setItem('livelycoffee_completo', JSON.stringify(completo));
+          atualizarFooter(completo.config);
+          return;
+        }
+      }
+    } catch (e) {
+      console.warn("Falha ao buscar db.json - usando localStorage.");
+    }
+
+    const salvo = localStorage.getItem('livelycoffee_completo');
+    if (salvo) {
+      try {
+        const completo = JSON.parse(salvo);
+        const produtos = completo.produtos || [];
+        if (produtos.length > 0) {
+          // Usa os 3 primeiros produtos do cardápio como destaques
+          produtosDestaque = produtos.slice(0, 3);
+        }
+        atualizarFooter(completo.config);
+      } catch (err) {
+        console.error("Erro ao carregar destaques do localStorage:", err);
+      }
+    }
+  }
+
+  function atualizarFooter(config) {
+    if (!config) return;
+    const nomeNode = document.getElementById('footer-nome');
+    const phoneNode = document.getElementById('footer-telefone');
+    const emailNode = document.getElementById('footer-email');
+    const emailLinkNode = document.getElementById('footer-email-link');
+    const horarioNode = document.getElementById('footer-horario');
+
+    if (nomeNode) nomeNode.textContent = config.nomeLoja || "Lively Coffee";
+    if (phoneNode) phoneNode.textContent = config.telefone || "(11) 99999-9999";
+    if (emailNode) emailNode.textContent = config.email || "contato@livelycoffee.com";
+    if (emailLinkNode) emailLinkNode.href = `mailto:${config.email || "contato@livelycoffee.com"}`;
+    if (horarioNode) horarioNode.innerHTML = config.horario || "Seg-Sex: 08h - 22h";
+  }
+
+  // Carregar produtos em destaque
+  async function renderProdutos() {
+    await carregarDestaques();
+    const container = document.getElementById('products-container');
+    if (!container) return;
+    container.innerHTML = produtosDestaque.map(p => `
+      <div class="product-card">
+        <img src="${p.img}" alt="${p.nome}" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'300\' viewBox=\'0 0 100 100\'><rect width=\'100%\' height=\'100%\' fill=\'%23f5efe6\'/><text x=\'50%\' y=\'55%\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-size=\'40\'>☕</text></svg>'">
+        <div class="product-info">
+          <h4>${p.nome}</h4>
+          <div class="product-desc">${p.desc || ''}</div>
+          <div class="product-price">R$ ${p.preco.toFixed(2)}</div>
+          <button class="btn-add" onclick="window.location.href='cardapio.html'">
+            <i class="fas fa-cart-plus"></i> Ver no Cardápio
+          </button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // Menu lateral
+  const btnMenu = document.getElementById('btn-menu');
+  const sidebar = document.getElementById('sidebar');
+  const cartTab = document.getElementById('cart-tab');
+  
+  btnMenu?.addEventListener('click', (e) => { 
+    e.stopPropagation(); 
+    sidebar?.classList.toggle('active'); 
+  });
+  
+  cartTab?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    window.location.href = 'cardapio.html';
+  });
+  
+  document.addEventListener('click', (e) => { 
+    if (sidebar && !sidebar.contains(e.target) && !btnMenu?.contains(e.target)) {
+      sidebar.classList.remove('active');
+    }
+  });
+  
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      sidebar?.classList.remove('active');
+    }
+  });
+
+  renderProdutos();
+</script>
+</body>
+</html>

@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lively Coffee - Livraria</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .livraria-layout { display: grid; grid-template-columns: 1fr 320px; gap: 30px; align-items: start; }
+    .sinopse-sidebar { position: sticky; top: 85px; background: linear-gradient(135deg, #fff8f0, #f5efe6); border-radius: 16px; padding: 20px; border: 1px solid rgba(93,64,55,0.2); max-height: 70vh; overflow-y: auto; }
+    .sinopse-sidebar .sinopse-header { border-bottom: 2px solid #5d4037; padding-bottom: 12px; margin-bottom: 15px; }
+    .sinopse-sidebar .sinopse-header h3 { font-size: 1.1rem; color: #5d4037; margin-bottom: 4px; }
+    .sinopse-author { font-size: 0.75rem; color: #8d6e63; font-style: italic; }
+    .sinopse-content { line-height: 1.6; color: #4e342e; text-align: justify; font-size: 0.85rem; margin-bottom: 15px; }
+    .sinopse-price { font-size: 1.1rem; font-weight: bold; color: #5d4037; margin-bottom: 12px; }
+    .btn-add-sinopse { width: 100%; padding: 10px; background: #5d4037; color: #f5f5dc; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.8rem; }
+    .btn-add-sinopse:hover { background: #3e2723; transform: translateY(-2px); }
+    .empty-sinopse { text-align: center; padding: 40px 20px; color: #bcaaa4; }
+    .empty-sinopse i { font-size: 2.5rem; margin-bottom: 12px; color: #d7ccc8; }
+    .book-card.selected { border: 2px solid #5d4037; transform: scale(1.02); }
+    @media (max-width: 768px) { .livraria-layout { grid-template-columns: 1fr; } .sinopse-sidebar { position: static; margin-top: 20px; max-height: none; } }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>📚 Lively Coffee</h1>
+</header>
+
+<button id="btn-menu"><i class="fas fa-bars"></i> MENU</button>
+<button id="cart-tab"><i class="fas fa-shopping-cart"></i> <span id="cart-count">0</span></button>
+
+<aside class="sidebar" id="sidebar">
+  <h3><i class="fas fa-compass"></i> Explorar</h3>
+  <ul>
+    <li><a href="index.html"><i class="fas fa-home"></i> Início</a></li>
+    <li><a href="cardapio.html"><i class="fas fa-mug-hot"></i> Cardápio</a></li>
+    <li><a href="livraria.html"><i class="fas fa-book"></i> Livraria</a></li>
+    <li><a href="areaverde.html"><i class="fas fa-leaf"></i> Área Verde</a></li>
+    <li><a href="sobrenos.html"><i class="fas fa-heart"></i> Sobre Nós</a></li>
+  </ul>
+  <div class="sidebar-divider"></div>
+  <ul class="sidebar-admin">
+    <li><a href="admin/index.html"><i class="fas fa-user-cog"></i> Admin</a></li>
+    <li><a href="admin/cozinha.html"><i class="fas fa-utensils"></i> Cozinha</a></li>
+  </ul>
+</aside>
+
+<main class="content">
+  <div class="page-header">
+    <h2>📖 Nossa Livraria</h2>
+    <p>Encontre o livro perfeito para acompanhar seu café</p>
+  </div>
+
+  <div class="search-box">
+    <input type="text" id="search-input" placeholder="🔍 Buscar livro por título ou autor...">
+  </div>
+
+  <div class="categories">
+    <button class="cat-btn active" data-category="todos">Todos</button>
+    <button class="cat-btn" data-category="ficcao">Ficção</button>
+    <button class="cat-btn" data-category="romance">Romance</button>
+    <button class="cat-btn" data-category="filosofia">Filosofia</button>
+    <button class="cat-btn" data-category="poesia">Poesia</button>
+    <button class="cat-btn" data-category="autoajuda">Autoajuda</button>
+  </div>
+
+  <div class="livraria-layout">
+    <div class="books-section">
+      <div class="books-grid" id="books-container"></div>
+    </div>
+    <div class="sinopse-sidebar" id="sinopse-sidebar">
+      <div class="empty-sinopse">
+        <i class="fas fa-book-open"></i>
+        <p>✨ Clique em um livro<br>para ver a sinopse</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-content">
+    <div class="footer-section"><h4 id="footer-nome">Lively Coffee</h4><p id="footer-desc">Café, livros e natureza em um só lugar.</p><div class="social-links"><a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a><a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook"></i></a><a href="https://web.whatsapp.com" target="_blank"><i class="fab fa-whatsapp"></i></a></div></div>
+    <div class="footer-section"><h4>Horário</h4><p id="footer-horario">Seg-Sex: 08h - 22h<br>Sáb-Dom: 09h - 20h</p></div>
+    <div class="footer-section"><h4>Contato</h4><p id="footer-contato"><i class="fas fa-phone"></i> <span id="footer-telefone">(11) 99999-9999</span><br><a id="footer-email-link" href="mailto:contato@livelycoffee.com" style="color: inherit; text-decoration: none;"><i class="fas fa-envelope"></i> <span id="footer-email">contato@livelycoffee.com</span></a></p></div>
+  </div>
+  <div class="copyright"><p>&copy; 2024 Lively Coffee - Todos os direitos reservados.</p></div>
+</footer>
+
+<!-- Sidebar do Carrinho -->
+<aside class="cart-sidebar" id="cart-sidebar">
+  <div class="cart-header">
+    <h2><i class="fas fa-shopping-cart"></i> Seu Carrinho</h2>
+    <span class="close-cart" id="close-cart">&times;</span>
+  </div>
+  
+  <div class="delivery-section">
+    <h4><i class="fas fa-truck"></i> Como quer receber?</h4>
+    <div class="delivery-options">
+      <div class="delivery-opt selected" data-delivery="retirada">
+        <input type="radio" name="delivery" id="retirada" checked> <label for="retirada">📦 Retirada na Loja</label>
+      </div>
+      <div class="delivery-opt" data-delivery="entrega">
+        <input type="radio" name="delivery" id="entrega"> <label for="entrega">🚚 Entrega (R$ 8,00)</label>
+      </div>
+    </div>
+  </div>
+  
+  <div class="address-form" id="address-form">
+    <h4>Endereço de Entrega</h4>
+    <input type="text" id="endereco" placeholder="Rua, número">
+    <input type="text" id="bairro" placeholder="Bairro">
+    <input type="text" id="cidade" placeholder="Cidade">
+    <input type="text" id="cep" placeholder="CEP">
+    <textarea id="complemento" placeholder="Complemento (opcional)"></textarea>
+  </div>
+  
+  <ul id="cart-items">
+    <li class="empty-cart">Seu carrinho está vazio</li>
+  </ul>
+  
+  <div class="cart-footer">
+    <div id="cart-total">Total: R$ 0,00</div>
+    <button class="btn-checkout" onclick="finalizarPedidoLivros()">Finalizar Pedido</button>
+  </div>
+</aside>
+
+<script>
+  let livros = [];
+  let carrinhoLivros = [];
+  let livroSelecionado = null;
+  let categoriaAtual = "todos";
+  let termoBusca = "";
+  let deliveryType = "retirada";
+  let dadosCompletos = {};
+
+  async function carregarDados() {
+    let saved = null;
+    try {
+      const response = await fetch('data/db.json');
+      if (response.ok) {
+        const completo = await response.json();
+        if (completo && Object.keys(completo).length > 0) {
+          saved = JSON.stringify(completo);
+          localStorage.setItem('livelycoffee_completo', saved);
+        }
+      }
+    } catch (e) {
+      console.warn("Falha ao buscar db.json - usando localStorage.");
+    }
+
+    if (!saved) {
+      saved = localStorage.getItem('livelycoffee_completo');
+    }
+
+    if (saved) {
+      dadosCompletos = JSON.parse(saved);
+      livros = dadosCompletos.livros || [];
+      
+      // Atualizar footer
+      document.getElementById('footer-nome').textContent = dadosCompletos.config?.nomeLoja || "Lively Coffee";
+      document.getElementById('footer-telefone').textContent = dadosCompletos.config?.telefone || "(11) 99999-9999";
+      const email = dadosCompletos.config?.email || "contato@livelycoffee.com";
+      document.getElementById('footer-email').textContent = email;
+      const emailLink = document.getElementById('footer-email-link');
+      if (emailLink) emailLink.href = `mailto:${email}`;
+      document.getElementById('footer-horario').innerHTML = dadosCompletos.config?.horario || "Seg-Sex: 08h - 22h<br>Sáb-Dom: 09h - 20h";
+    } else {
+      // Dados padrão
+      livros = [
+        { id: 1, nome: "O Alquimista", autor: "Paulo Coelho", preco: 49.90, categoria: "ficcao", sinopse: "Uma fábula sobre seguir seus sonhos...", img: "images/alquimista.jpg" },
+        { id: 2, nome: "Dom Casmurro", autor: "Machado de Assis", preco: 39.90, categoria: "romance", sinopse: "A obra-prima de Machado de Assis...", img: "images/casmurro.jpg" },
+        { id: 3, nome: "Sapiens", autor: "Yuval Noah Harari", preco: 69.90, categoria: "filosofia", sinopse: "Uma breve história da humanidade...", img: "images/sapiens.jpg" },
+        { id: 4, nome: "1984", autor: "George Orwell", preco: 54.90, categoria: "ficcao", sinopse: "Um clássico da distopia...", img: "images/1984.jpg" },
+        { id: 5, nome: "O Pequeno Príncipe", autor: "Antoine de Saint-Exupéry", preco: 29.90, categoria: "ficcao", sinopse: "Uma obra encantadora...", img: "images/principe.jpg" },
+        { id: 6, nome: "A Arte da Guerra", autor: "Sun Tzu", preco: 29.90, categoria: "filosofia", sinopse: "Um antigo tratado militar chinês...", img: "images/arte-guerra.jpg" },
+        { id: 7, nome: "Poemas Completos", autor: "Emily Dickinson", preco: 35.90, categoria: "poesia", sinopse: "Coletânea de poemas...", img: "images/poemas.jpg" },
+        { id: 8, nome: "O Poder do Agora", autor: "Eckhart Tolle", preco: 49.90, categoria: "autoajuda", sinopse: "Um guia espiritual...", img: "images/poder-agora.jpg" }
+      ];
+    }
+    renderLivros();
+  }
+
+  function renderLivros() {
+    const container = document.getElementById('books-container');
+    let filtrados = livros;
+    if (categoriaAtual !== "todos") {
+      filtrados = filtrados.filter(l => l.categoria === categoriaAtual);
+    }
+    if (termoBusca) {
+      filtrados = filtrados.filter(l => 
+        l.nome.toLowerCase().includes(termoBusca) || 
+        l.autor.toLowerCase().includes(termoBusca)
+      );
+    }
+    
+    if (filtrados.length === 0) {
+      container.innerHTML = '<p style="text-align:center; padding:40px;">Nenhum livro encontrado.</p>';
+      return;
+    }
+    
+    container.innerHTML = filtrados.map(l => `
+      <div class="book-card ${livroSelecionado?.id === l.id ? 'selected' : ''}" onclick="selecionarLivro(${l.id})">
+        <img src="${l.img}" alt="${l.nome}" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'300\' viewBox=\'0 0 100 100\'><rect width=\'100%\' height=\'100%\' fill=\'%23f5efe6\'/><text x=\'50%\' y=\'55%\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-size=\'40\'>📖</text></svg>'">
+        <div class="book-info">
+          <h3>${l.nome}</h3>
+          <div class="book-author">${l.autor}</div>
+          <div class="book-price">R$ ${l.preco.toFixed(2)}</div>
+          <button class="btn-add-book" onclick="event.stopPropagation(); adicionarAoCarrinhoLivros(${l.id}, '${l.nome}', ${l.preco})">
+            <i class="fas fa-cart-plus"></i> Adicionar
+          </button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function selecionarLivro(id) {
+    livroSelecionado = livros.find(l => l.id === id);
+    renderLivros();
+    
+    const sinopseDiv = document.getElementById('sinopse-sidebar');
+    sinopseDiv.innerHTML = `
+      <div class="sinopse-header">
+        <h3>${livroSelecionado.nome}</h3>
+        <div class="sinopse-author">${livroSelecionado.autor}</div>
+      </div>
+      <div class="sinopse-content">${livroSelecionado.sinopse || 'Sinopse não disponível.'}</div>
+      <div class="sinopse-footer">
+        <div class="sinopse-price">R$ ${livroSelecionado.preco.toFixed(2)}</div>
+        <button class="btn-add-sinopse" onclick="adicionarAoCarrinhoLivros(${livroSelecionado.id}, '${livroSelecionado.nome}', ${livroSelecionado.preco})">
+          <i class="fas fa-cart-plus"></i> Adicionar ao Carrinho
+        </button>
+      </div>
+    `;
+  }
+
+  function carregarCarrinhoLivros() {
+    const salvo = localStorage.getItem('carrinho_livros');
+    if (salvo) {
+      carrinhoLivros = JSON.parse(salvo);
+      atualizarCarrinhoLivros();
+    }
+  }
+
+  function salvarCarrinhoLivros() {
+    localStorage.setItem('carrinho_livros', JSON.stringify(carrinhoLivros));
+  }
+
+  function adicionarAoCarrinhoLivros(id, nome, preco) {
+    const existente = carrinhoLivros.find(item => item.id === id);
+    if (existente) {
+      existente.quantidade++;
+    } else {
+      carrinhoLivros.push({ id, nome, preco, quantidade: 1 });
+    }
+    atualizarCarrinhoLivros();
+    salvarCarrinhoLivros();
+    mostrarNotificacao(`${nome} adicionado!`);
+  }
+
+  function atualizarCarrinhoLivros() {
+    const cartList = document.getElementById('cart-items');
+    const cartCount = document.getElementById('cart-count');
+    const cartTotal = document.getElementById('cart-total');
+    
+    if (carrinhoLivros.length === 0) {
+      cartList.innerHTML = '<li class="empty-cart">Seu carrinho está vazio</li>';
+      if (cartCount) cartCount.textContent = '0';
+      if (cartTotal) cartTotal.textContent = 'Total: R$ 0,00';
+      return;
+    }
+    
+    let total = 0;
+    let qtdTotal = 0;
+    
+    cartList.innerHTML = carrinhoLivros.map(item => {
+      total += item.preco * item.quantidade;
+      qtdTotal += item.quantidade;
+      return `
+        <li class="cart-item">
+          <div>
+            <strong>${item.nome}</strong>
+            <br><small>R$ ${item.preco.toFixed(2)}</small>
+          </div>
+          <div style="display: flex; gap: 6px;">
+            <button onclick="alterarQuantidadeLivros(${item.id}, -1, event)" style="background:#5d4037; border:none; width:24px; border-radius:4px; color:white;">-</button>
+            <span>${item.quantidade}</span>
+            <button onclick="alterarQuantidadeLivros(${item.id}, 1, event)" style="background:#5d4037; border:none; width:24px; border-radius:4px; color:white;">+</button>
+          </div>
+          <div>R$ ${(item.preco * item.quantidade).toFixed(2)}</div>
+        </li>
+      `;
+    }).join('');
+    
+    const taxaEntrega = deliveryType === "entrega" ? 8 : 0;
+    const totalFinal = total + taxaEntrega;
+    
+    if (cartCount) cartCount.textContent = qtdTotal;
+    if (cartTotal) cartTotal.textContent = `Total: R$ ${totalFinal.toFixed(2)}${taxaEntrega > 0 ? ' (inclui entrega)' : ''}`;
+  }
+
+  function alterarQuantidadeLivros(id, delta, event) {
+    if (event) event.stopPropagation();
+    const item = carrinhoLivros.find(i => i.id === id);
+    if (item) {
+      item.quantidade += delta;
+      if (item.quantidade <= 0) {
+        carrinhoLivros = carrinhoLivros.filter(i => i.id !== id);
+      }
+      atualizarCarrinhoLivros();
+      salvarCarrinhoLivros();
+    }
+  }
+
+  function finalizarPedidoLivros() {
+    if (carrinhoLivros.length === 0) {
+      mostrarNotificacao("Seu carrinho está vazio!");
+      return;
+    }
+    
+    if (deliveryType === "entrega") {
+      const endereco = document.getElementById('endereco')?.value;
+      if (!endereco) {
+        mostrarNotificacao("Preencha o endereço de entrega!");
+        return;
+      }
+    }
+    
+    const total = carrinhoLivros.reduce((s, i) => s + i.preco * i.quantidade, 0);
+    const taxaEntrega = deliveryType === "entrega" ? 8 : 0;
+    const totalFinal = total + taxaEntrega;
+    const entregaTexto = deliveryType === "retirada" ? "Retirada na Loja" : "Entrega em domicílio";
+    
+    // Salvar o pedido no localStorage
+    try {
+      const pedidos = JSON.parse(localStorage.getItem('livelycoffee_pedidos') || '[]');
+      const entrega = {
+        tipo: deliveryType,
+        endereco: document.getElementById('endereco')?.value || '',
+        bairro: document.getElementById('bairro')?.value || '',
+        cidade: document.getElementById('cidade')?.value || '',
+        cep: document.getElementById('cep')?.value || '',
+        complemento: document.getElementById('complemento')?.value || ''
+      };
+      const novoPedido = {
+        id: 'PED-' + Date.now(),
+        tipo: 'livraria',
+        itens: carrinhoLivros.map(item => ({
+          id: item.id,
+          nome: item.nome,
+          preco: item.preco,
+          quantidade: item.quantidade
+        })),
+        total: totalFinal,
+        entrega: entrega,
+        data: new Date().toLocaleString('pt-BR'),
+        status: 'Pendente'
+      };
+      pedidos.push(novoPedido);
+      localStorage.setItem('livelycoffee_pedidos', JSON.stringify(pedidos));
+    } catch (e) {
+      console.error("Erro ao salvar o pedido no localStorage:", e);
+    }
+    
+    alert(`✅ PEDIDO REALIZADO!\n\nItens: ${carrinhoLivros.length}\nTotal: R$ ${totalFinal.toFixed(2)}\n${entregaTexto}\n\nObrigado!`);
+    
+    carrinhoLivros = [];
+    atualizarCarrinhoLivros();
+    salvarCarrinhoLivros();
+    document.getElementById('cart-sidebar').classList.remove('active');
+  }
+
+  function mostrarNotificacao(msg) {
+    const notif = document.createElement('div');
+    notif.textContent = msg;
+    notif.className = 'notificacao';
+    document.body.appendChild(notif);
+    setTimeout(() => notif.remove(), 2000);
+  }
+
+  // Eventos de entrega
+  document.querySelectorAll('.delivery-opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      document.querySelectorAll('.delivery-opt').forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      deliveryType = opt.dataset.delivery;
+      const addressForm = document.getElementById('address-form');
+      if (deliveryType === "entrega") {
+        addressForm.classList.add('active');
+      } else {
+        addressForm.classList.remove('active');
+      }
+      atualizarCarrinhoLivros();
+    });
+  });
+
+  // Eventos de categoria
+  document.querySelectorAll('.cat-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      categoriaAtual = btn.dataset.category;
+      renderLivros();
+    });
+  });
+
+  // Busca
+  document.getElementById('search-input').addEventListener('input', (e) => {
+    termoBusca = e.target.value.toLowerCase();
+    renderLivros();
+  });
+
+  // Menu lateral
+  const btnMenu = document.getElementById('btn-menu');
+  const sidebar = document.getElementById('sidebar');
+  const cartTab = document.getElementById('cart-tab');
+  const cartSidebar = document.getElementById('cart-sidebar');
+  const closeCart = document.getElementById('close-cart');
+
+  btnMenu?.addEventListener('click', (e) => { 
+    e.stopPropagation(); 
+    sidebar?.classList.toggle('active'); 
+  });
+  
+  cartTab?.addEventListener('click', (e) => { 
+    e.stopPropagation(); 
+    cartSidebar?.classList.toggle('active'); 
+  });
+  
+  closeCart?.addEventListener('click', () => { 
+    cartSidebar?.classList.remove('active'); 
+  });
+  
+  document.addEventListener('click', (e) => {
+    if (sidebar && !sidebar.contains(e.target) && !btnMenu?.contains(e.target)) {
+      sidebar.classList.remove('active');
+    }
+    if (cartSidebar && !cartSidebar.contains(e.target) && !cartTab?.contains(e.target)) {
+      if (!e.target.closest('.cart-item button')) {
+        cartSidebar.classList.remove('active');
+      }
+    }
+  });
+  
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      sidebar?.classList.remove('active');
+      cartSidebar?.classList.remove('active');
+    }
+  });
+
+  carregarDados();
+  carregarCarrinhoLivros();
+</script>
+</body>
+</html>

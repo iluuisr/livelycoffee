@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lively Coffee - Cardápio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <h1>☕ Lively Coffee</h1>
+</header>
+
+<button id="btn-menu"><i class="fas fa-bars"></i> MENU</button>
+<button id="cart-tab"><i class="fas fa-shopping-cart"></i> <span id="cart-count">0</span></button>
+
+<aside class="sidebar" id="sidebar">
+  <h3><i class="fas fa-compass"></i> Explorar</h3>
+  <ul>
+    <li><a href="index.html"><i class="fas fa-home"></i> Início</a></li>
+    <li><a href="cardapio.html"><i class="fas fa-mug-hot"></i> Cardápio</a></li>
+    <li><a href="livraria.html"><i class="fas fa-book"></i> Livraria</a></li>
+    <li><a href="areaverde.html"><i class="fas fa-leaf"></i> Área Verde</a></li>
+    <li><a href="sobrenos.html"><i class="fas fa-heart"></i> Sobre Nós</a></li>
+  </ul>
+  <div class="sidebar-divider"></div>
+  <ul class="sidebar-admin">
+    <li><a href="admin/index.html"><i class="fas fa-user-cog"></i> Admin</a></li>
+    <li><a href="admin/cozinha.html"><i class="fas fa-utensils"></i> Cozinha</a></li>
+  </ul>
+</aside>
+
+<main class="content">
+  <div class="page-header">
+    <h2>🍽️ Nosso Cardápio</h2>
+    <p>Escolha seus produtos, informe sua mesa e faça seu pedido</p>
+  </div>
+
+  <div class="categories">
+    <button class="cat-btn active" data-category="todos">Todos</button>
+    <button class="cat-btn" data-category="cafes">☕ Cafés Quentes</button>
+    <button class="cat-btn" data-category="gelados">🧊 Bebidas Geladas</button>
+    <button class="cat-btn" data-category="acompanhamentos">🍰 Acompanhamentos</button>
+    <button class="cat-btn" data-category="almoco">🍽️ Almoço</button>
+  </div>
+
+  <div class="products-grid" id="products-container"></div>
+</main>
+
+<footer>
+  <div class="footer-content">
+    <div class="footer-section"><h4 id="footer-nome">Lively Coffee</h4><p id="footer-desc">Café, livros e natureza em um só lugar.</p><div class="social-links"><a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a><a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook"></i></a><a href="https://web.whatsapp.com" target="_blank"><i class="fab fa-whatsapp"></i></a></div></div>
+    <div class="footer-section"><h4>Horário</h4><p id="footer-horario">Seg-Sex: 08h - 22h<br>Sáb-Dom: 09h - 20h</p></div>
+    <div class="footer-section"><h4>Contato</h4><p id="footer-contato"><i class="fas fa-phone"></i> <span id="footer-telefone">(11) 99999-9999</span><br><a id="footer-email-link" href="mailto:contato@livelycoffee.com" style="color: inherit; text-decoration: none;"><i class="fas fa-envelope"></i> <span id="footer-email">contato@livelycoffee.com</span></a></p></div>
+  </div>
+  <div class="copyright"><p>&copy; 2024 Lively Coffee - Todos os direitos reservados.</p></div>
+</footer>
+
+<!-- Sidebar do Carrinho -->
+<aside class="cart-sidebar" id="cart-sidebar">
+  <div class="cart-header">
+    <h2><i class="fas fa-shopping-cart"></i> Seu Pedido</h2>
+    <span class="close-cart" id="close-cart">&times;</span>
+  </div>
+  
+  <div class="table-selector">
+    <h4><i class="fas fa-chair"></i> Sua Mesa</h4>
+    <div class="table-options" id="table-options">
+      <div class="table-btn" data-table="1">Mesa 1</div>
+      <div class="table-btn" data-table="2">Mesa 2</div>
+      <div class="table-btn" data-table="3">Mesa 3</div>
+      <div class="table-btn" data-table="4">Mesa 4</div>
+      <div class="table-btn" data-table="5">Mesa 5</div>
+      <div class="table-btn" data-table="6">Mesa 6</div>
+      <div class="table-btn" data-table="7">Mesa 7</div>
+      <div class="table-btn" data-table="8">Mesa 8</div>
+    </div>
+    <div class="custom-table">
+      <input type="text" id="custom-table-input" placeholder="Ou digite o número">
+      <button onclick="setCustomTable()">Definir</button>
+    </div>
+  </div>
+  
+  <div class="observacao-section">
+    <h4><i class="fas fa-pen"></i> Observações</h4>
+    <textarea id="observacao" placeholder="Ex: sem açúcar, alergias..."></textarea>
+  </div>
+  
+  <ul id="cart-items">
+    <li class="empty-cart">Seu pedido está vazio</li>
+  </ul>
+  
+  <div class="cart-footer">
+    <div id="cart-total">Total: R$ 0,00</div>
+    <button class="btn-checkout" onclick="confirmarPedido()">Finalizar Pedido</button>
+  </div>
+</aside>
+
+<!-- Modal de Confirmação -->
+<div class="confirm-modal" id="confirm-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Confirmar Pedido</h3>
+      <span class="close-modal" onclick="fecharConfirmModal()">&times;</span>
+    </div>
+    <div id="confirm-details" class="order-details"></div>
+    <div class="modal-buttons">
+      <button class="btn-cancel" onclick="fecharConfirmModal()">Cancelar</button>
+      <button class="btn-confirm" onclick="enviarPedido()">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let produtos = [];
+  let carrinho = [];
+  let categoriaAtual = "todos";
+  let mesaSelecionada = "1";
+  let dadosCompletos = {};
+
+  // Função para migrar caminhos de imagens antigas para os novos
+  function migrarImagens(produtosList) {
+    const mapeamento = {
+      "images/expresso.jpg": "images/expressocremoso.jpg",
+      "images/capuccino.jpg": "images/italiano-tradicional.jpg",
+      "images/latte.jpg": "images/lattemacchiato.jpg",
+      "images/mocha.jpg": "images/chocolate-mocha.jpg",
+      "images/frape.jpg": "images/frappebaunilha.jpg",
+      "images/suco.jpg": "images/suco-maracuja.jpg",
+      "images/sanduiche.jpg": "images/Sandwiches.jpg",
+      "images/risoto.jpg": "images/Risoto-de-Cogumelos.jpg"
+    };
+    let alterado = false;
+    produtosList.forEach(p => {
+      if (mapeamento[p.img]) {
+        p.img = mapeamento[p.img];
+        alterado = true;
+      }
+    });
+    return alterado;
+  }
+
+  // Carregar dados do localStorage ou API unificada
+  async function carregarDados() {
+    let saved = null;
+    try {
+      const response = await fetch('data/db.json');
+      if (response.ok) {
+        const completo = await response.json();
+        if (completo && Object.keys(completo).length > 0) {
+          saved = JSON.stringify(completo);
+          localStorage.setItem('livelycoffee_completo', saved);
+        }
+      }
+    } catch (e) {
+      console.warn("Falha ao buscar db.json - usando localStorage.");
+    }
+
+    if (!saved) {
+      saved = localStorage.getItem('livelycoffee_completo');
+    }
+
+    let usarPadrao = true;
+    if (saved) {
+      try {
+        dadosCompletos = JSON.parse(saved);
+        if (dadosCompletos.produtos && Array.isArray(dadosCompletos.produtos) && dadosCompletos.produtos.length > 0) {
+          produtos = dadosCompletos.produtos;
+          usarPadrao = false;
+          
+          // Executa migração automática caso haja caminhos antigos de imagem salvos
+          if (migrarImagens(produtos)) {
+            localStorage.setItem('livelycoffee_completo', JSON.stringify(dadosCompletos));
+          }
+          
+          // Atualizar informações do footer
+          document.getElementById('footer-nome').textContent = dadosCompletos.config?.nomeLoja || "Lively Coffee";
+          document.getElementById('footer-telefone').textContent = dadosCompletos.config?.telefone || "(11) 99999-9999";
+          const email = dadosCompletos.config?.email || "contato@livelycoffee.com";
+          document.getElementById('footer-email').textContent = email;
+          const emailLink = document.getElementById('footer-email-link');
+          if (emailLink) emailLink.href = `mailto:${email}`;
+          document.getElementById('footer-horario').innerHTML = dadosCompletos.config?.horario || "Seg-Sex: 08h - 22h<br>Sáb-Dom: 09h - 20h";
+        }
+      } catch (e) {
+        usarPadrao = true;
+      }
+    }
+
+    if (usarPadrao) {
+      // Dados padrão com caminhos de imagem corrigidos
+      produtos = [
+        { id: 1, nome: "Expresso Cremoso", preco: 8.90, desc: "Café encorpado com creme aveludado", categoria: "cafes", img: "images/expressocremoso.jpg" },
+        { id: 2, nome: "Capuccino Italiano", preco: 12.90, desc: "Café, leite vaporizado e espuma cremosa", categoria: "cafes", img: "images/italiano-tradicional.jpg" },
+        { id: 3, nome: "Latte Macchiato", preco: 11.90, desc: "Leite cremoso com café suave", categoria: "cafes", img: "images/lattemacchiato.jpg" },
+        { id: 4, nome: "Mocha Chocolate", preco: 14.90, desc: "Café com chocolate e chantilly", categoria: "cafes", img: "images/chocolate-mocha.jpg" },
+        { id: 5, nome: "Frapê de Baunilha", preco: 15.90, desc: "Bebida cremosa com calda de baunilha", categoria: "gelados", img: "images/frappebaunilha.jpg" },
+        { id: 6, nome: "Suco Natural", preco: 9.90, desc: "Laranja, morango ou limão", categoria: "gelados", img: "images/suco-maracuja.jpg" },
+        { id: 7, nome: "Cheesecake", preco: 16.90, desc: "Sobremesa cremosa com calda de frutas vermelhas", categoria: "acompanhamentos", img: "images/cheesecake.jpg" },
+        { id: 8, nome: "Croissant", preco: 8.90, desc: "Massa folhada crocante com manteiga", categoria: "acompanhamentos", img: "images/croissant.jpg" },
+        { id: 9, nome: "Brownie", preco: 12.90, desc: "Brownie de chocolate com sorvete", categoria: "acompanhamentos", img: "images/brownie.jpg" },
+        { id: 10, nome: "Sanduíche Artesanal", preco: 24.90, desc: "Pão artesanal, queijo, presunto e salada", categoria: "almoco", img: "images/Sandwiches.jpg" },
+        { id: 11, nome: "Salada Caesar", preco: 28.90, desc: "Alface, frango, parmesão e molho especial", categoria: "almoco", img: "images/salada.jpg" },
+        { id: 12, nome: "Risoto de Cogumelos", preco: 32.90, desc: "Risoto cremoso com cogumelos frescos", categoria: "almoco", img: "images/Risoto-de-Cogumelos.jpg" }
+      ];
+    }
+    renderProdutos();
+  }
+
+  function renderProdutos() {
+    const container = document.getElementById('products-container');
+    let filtrados = produtos;
+    if (categoriaAtual !== "todos") {
+      filtrados = produtos.filter(p => p.categoria === categoriaAtual);
+    }
+    
+    if (filtrados.length === 0) {
+      container.innerHTML = '<p style="text-align:center; padding:40px;">Nenhum produto encontrado.</p>';
+      return;
+    }
+    
+    container.innerHTML = filtrados.map(p => `
+      <div class="product-card">
+        <img src="${p.img}" alt="${p.nome}" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'300\' viewBox=\'0 0 100 100\'><rect width=\'100%\' height=\'100%\' fill=\'%23f5efe6\'/><text x=\'50%\' y=\'55%\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-size=\'40\'>☕</text></svg>'">
+        <div class="product-info">
+          <h3>${p.nome}</h3>
+          <div class="product-desc">${p.desc || ''}</div>
+          <div class="product-price">R$ ${p.preco.toFixed(2)}</div>
+          <button class="btn-add" onclick="adicionarAoCarrinho(${p.id}, '${p.nome}', ${p.preco})">
+            <i class="fas fa-plus-circle"></i> Adicionar
+          </button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // Carregar carrinho salvo
+  function carregarCarrinho() {
+    const salvo = localStorage.getItem('carrinho_cardapio');
+    if (salvo) {
+      carrinho = JSON.parse(salvo);
+      atualizarCarrinho();
+    }
+  }
+
+  function salvarCarrinho() {
+    localStorage.setItem('carrinho_cardapio', JSON.stringify(carrinho));
+  }
+
+  function adicionarAoCarrinho(id, nome, preco) {
+    const existente = carrinho.find(item => item.id === id);
+    if (existente) {
+      existente.quantidade++;
+    } else {
+      carrinho.push({ id, nome, preco, quantidade: 1 });
+    }
+    atualizarCarrinho();
+    salvarCarrinho();
+    mostrarNotificacao(`${nome} adicionado!`);
+  }
+
+  function atualizarCarrinho() {
+    const cartList = document.getElementById('cart-items');
+    const cartCount = document.getElementById('cart-count');
+    const cartTotal = document.getElementById('cart-total');
+    
+    if (carrinho.length === 0) {
+      cartList.innerHTML = '<li class="empty-cart">Seu pedido está vazio</li>';
+      if (cartCount) cartCount.textContent = '0';
+      if (cartTotal) cartTotal.textContent = 'Total: R$ 0,00';
+      return;
+    }
+    
+    let total = 0;
+    let qtdTotal = 0;
+    
+    cartList.innerHTML = carrinho.map(item => {
+      total += item.preco * item.quantidade;
+      qtdTotal += item.quantidade;
+      return `
+        <li class="cart-item">
+          <div>
+            <strong>${item.nome}</strong>
+            <br><small>R$ ${item.preco.toFixed(2)}</small>
+          </div>
+          <div style="display: flex; gap: 6px; align-items: center;">
+            <button onclick="alterarQuantidade(${item.id}, -1, event)" style="background:#5d4037; border:none; width:24px; border-radius:4px; color:white; cursor:pointer;">-</button>
+            <span>${item.quantidade}</span>
+            <button onclick="alterarQuantidade(${item.id}, 1, event)" style="background:#5d4037; border:none; width:24px; border-radius:4px; color:white; cursor:pointer;">+</button>
+          </div>
+          <div>R$ ${(item.preco * item.quantidade).toFixed(2)}</div>
+        </li>
+      `;
+    }).join('');
+    
+    if (cartCount) cartCount.textContent = qtdTotal;
+    if (cartTotal) cartTotal.textContent = `Total: R$ ${total.toFixed(2)}`;
+  }
+
+  function alterarQuantidade(id, delta, event) {
+    if (event) event.stopPropagation();
+    const item = carrinho.find(i => i.id === id);
+    if (item) {
+      item.quantidade += delta;
+      if (item.quantidade <= 0) {
+        carrinho = carrinho.filter(i => i.id !== id);
+      }
+      atualizarCarrinho();
+      salvarCarrinho();
+    }
+  }
+
+  function setCustomTable() {
+    const input = document.getElementById('custom-table-input');
+    const mesa = input.value.trim();
+    if (mesa && !isNaN(mesa) && mesa > 0) {
+      document.querySelectorAll('.table-btn').forEach(b => b.classList.remove('selected'));
+      mesaSelecionada = mesa;
+      input.value = '';
+      mostrarNotificacao(`Mesa ${mesa} selecionada!`);
+    } else if (mesa) {
+      mostrarNotificacao("Digite um número de mesa válido");
+    }
+  }
+
+  function confirmarPedido() {
+    if (carrinho.length === 0) {
+      mostrarNotificacao("Adicione itens ao pedido!");
+      return;
+    }
+    
+    if (!mesaSelecionada) {
+      mostrarNotificacao("Selecione uma mesa!");
+      return;
+    }
+    
+    const total = carrinho.reduce((s, i) => s + i.preco * i.quantidade, 0);
+    const observacao = document.getElementById('observacao').value || "Nenhuma";
+    
+    document.getElementById('confirm-details').innerHTML = `
+      <p><strong>Mesa:</strong> ${mesaSelecionada}</p>
+      <p><strong>Itens:</strong> ${carrinho.map(i => `${i.quantidade}x ${i.nome}`).join(', ')}</p>
+      <p><strong>Total:</strong> R$ ${total.toFixed(2)}</p>
+      <p><strong>Observações:</strong> ${observacao}</p>
+    `;
+    document.getElementById('confirm-modal').classList.add('active');
+  }
+  
+  function fecharConfirmModal() {
+    document.getElementById('confirm-modal').classList.remove('active');
+  }
+  
+  function enviarPedido() {
+    const total = carrinho.reduce((s, i) => s + i.preco * i.quantidade, 0);
+    const observacao = document.getElementById('observacao').value || "Nenhuma";
+    
+    // Salvar o pedido no localStorage
+    try {
+      const pedidos = JSON.parse(localStorage.getItem('livelycoffee_pedidos') || '[]');
+      const novoPedido = {
+        id: 'PED-' + Date.now(),
+        tipo: 'cozinha',
+        mesa: mesaSelecionada,
+        itens: carrinho.map(item => ({
+          id: item.id,
+          nome: item.nome,
+          preco: item.preco,
+          quantidade: item.quantidade
+        })),
+        observacao: observacao,
+        total: total,
+        data: new Date().toLocaleString('pt-BR'),
+        status: 'Pendente'
+      };
+      pedidos.push(novoPedido);
+      localStorage.setItem('livelycoffee_pedidos', JSON.stringify(pedidos));
+    } catch (e) {
+      console.error("Erro ao salvar o pedido no localStorage:", e);
+    }
+    
+    alert(`✅ PEDIDO ENVIADO!\n\nMesa: ${mesaSelecionada}\nItens: ${carrinho.map(i => `${i.quantidade}x ${i.nome}`).join(', ')}\nTotal: R$ ${total.toFixed(2)}\nObservações: ${observacao}\n\nObrigado!`);
+    
+    carrinho = [];
+    document.getElementById('observacao').value = '';
+    atualizarCarrinho();
+    salvarCarrinho();
+    fecharConfirmModal();
+    document.getElementById('cart-sidebar').classList.remove('active');
+  }
+
+  function mostrarNotificacao(msg) {
+    const notif = document.createElement('div');
+    notif.textContent = msg;
+    notif.className = 'notificacao';
+    document.body.appendChild(notif);
+    setTimeout(() => notif.remove(), 2000);
+  }
+
+  // Inicializar seletores de mesa
+  function initMesaSelector() {
+    document.querySelectorAll('.table-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.table-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        mesaSelecionada = btn.dataset.table;
+        document.getElementById('custom-table-input').value = '';
+      });
+    });
+    document.querySelector('.table-btn[data-table="1"]')?.classList.add('selected');
+  }
+
+  // Eventos dos botões de categoria
+  document.querySelectorAll('.cat-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      categoriaAtual = btn.dataset.category;
+      renderProdutos();
+    });
+  });
+
+  // Menu lateral
+  const btnMenu = document.getElementById('btn-menu');
+  const sidebar = document.getElementById('sidebar');
+  const cartTab = document.getElementById('cart-tab');
+  const cartSidebar = document.getElementById('cart-sidebar');
+  const closeCart = document.getElementById('close-cart');
+
+  btnMenu?.addEventListener('click', (e) => { 
+    e.stopPropagation(); 
+    sidebar?.classList.toggle('active'); 
+  });
+  
+  cartTab?.addEventListener('click', (e) => { 
+    e.stopPropagation(); 
+    cartSidebar?.classList.toggle('active'); 
+  });
+  
+  closeCart?.addEventListener('click', () => { 
+    cartSidebar?.classList.remove('active'); 
+  });
+  
+  document.addEventListener('click', (e) => {
+    if (sidebar && !sidebar.contains(e.target) && !btnMenu?.contains(e.target)) {
+      sidebar.classList.remove('active');
+    }
+    if (cartSidebar && !cartSidebar.contains(e.target) && !cartTab?.contains(e.target)) {
+      if (!e.target.closest('.cart-item button')) {
+        cartSidebar.classList.remove('active');
+      }
+    }
+  });
+  
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      sidebar?.classList.remove('active');
+      cartSidebar?.classList.remove('active');
+      document.getElementById('confirm-modal')?.classList.remove('active');
+    }
+  });
+
+  initMesaSelector();
+  carregarDados();
+  carregarCarrinho();
+</script>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lively Coffee - Sobre Nós</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <h1>☕ Lively Coffee</h1>
+</header>
+
+<button id="btn-menu"><i class="fas fa-bars"></i> MENU</button>
+
+<aside class="sidebar" id="sidebar">
+  <h3><i class="fas fa-compass"></i> Explorar</h3>
+  <ul>
+    <li><a href="index.html"><i class="fas fa-home"></i> Início</a></li>
+    <li><a href="cardapio.html"><i class="fas fa-mug-hot"></i> Cardápio</a></li>
+    <li><a href="livraria.html"><i class="fas fa-book"></i> Livraria</a></li>
+    <li><a href="areaverde.html"><i class="fas fa-leaf"></i> Área Verde</a></li>
+    <li><a href="sobrenos.html"><i class="fas fa-heart"></i> Sobre Nós</a></li>
+  </ul>
+  <div class="sidebar-divider"></div>
+  <ul class="sidebar-admin">
+    <li><a href="admin/index.html"><i class="fas fa-user-cog"></i> Admin</a></li>
+    <li><a href="admin/cozinha.html"><i class="fas fa-utensils"></i> Cozinha</a></li>
+  </ul>
+</aside>
+
+<main class="content">
+  <div class="sobre-container" id="sobre-container">
+    <div class="loading">Carregando...</div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-content">
+    <div class="footer-section"><h4 id="footer-nome">Lively Coffee</h4><p>Café, livros e natureza em um só lugar.</p><div class="social-links"><a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a><a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook"></i></a><a href="https://web.whatsapp.com" target="_blank"><i class="fab fa-whatsapp"></i></a></div></div>
+    <div class="footer-section"><h4>Horário</h4><p id="footer-horario">Seg-Sex: 08h - 22h</p></div>
+    <div class="footer-section"><h4>Contato</h4><p><i class="fas fa-phone"></i> <span id="footer-telefone">(11) 99999-9999</span></p><p><a id="footer-email-link" href="mailto:contato@livelycoffee.com" style="color: inherit; text-decoration: none;"><i class="fas fa-envelope"></i> <span id="footer-email">contato@livelycoffee.com</span></a></p></div>
+  </div>
+  <div class="copyright"><p>&copy; 2024 Lively Coffee - Todos os direitos reservados.</p></div>
+</footer>
+
+<style>
+  .sobre-container { max-width: 1200px; margin: 0 auto; }
+  .loading { text-align: center; padding: 50px; color: #8d6e63; }
+  .sobre-hero { text-align: center; padding: 40px 20px; background: linear-gradient(135deg, rgba(230,221,196,0.4), rgba(245,239,230,0.6)); border-radius: 40px; margin-bottom: 40px; }
+  .sobre-hero h2 { font-size: 1.8rem; color: #5d4037; }
+  .sobre-hero p { font-size: 0.9rem; color: #6d4c41; max-width: 700px; margin: 0 auto; }
+  .historia-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-bottom: 40px; }
+  .historia-card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+  .historia-card i { font-size: 2rem; color: #5d4037; margin-bottom: 15px; }
+  .historia-card h3 { font-size: 1.2rem; margin-bottom: 10px; }
+  .historia-card p { color: #6d4c41; line-height: 1.5; font-size: 0.85rem; }
+  .valores-section { margin-bottom: 40px; }
+  .valores-section h3 { text-align: center; font-size: 1.5rem; color: #5d4037; margin-bottom: 25px; }
+  .valores-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; }
+  .valor-card { text-align: center; padding: 20px; background: linear-gradient(135deg, #fff8f0, #f5efe6); border-radius: 16px; transition: transform 0.3s; }
+  .valor-card:hover { transform: translateY(-5px); }
+  .valor-card i { font-size: 1.6rem; color: #5d4037; margin-bottom: 10px; display: inline-block; }
+  .valor-card h4 { font-size: 1rem; margin: 8px 0; }
+  .valor-card p { font-size: 0.75rem; color: #8d6e63; }
+  .diferenciais-section { background: linear-gradient(135deg, #eaddca, #d7ccc8); border-radius: 25px; padding: 30px; margin-bottom: 40px; }
+  .diferenciais-section h3 { text-align: center; font-size: 1.5rem; color: #5d4037; margin-bottom: 25px; }
+  .diferenciais-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 25px; }
+  .diferencial-item { text-align: center; transition: transform 0.3s; }
+  .diferencial-item:hover { transform: translateY(-5px); }
+  .diferencial-item i { font-size: 1.8rem; color: #5d4037; margin-bottom: 10px; display: inline-block; }
+  .diferencial-item h4 { font-size: 1rem; margin: 10px 0 5px; }
+  .diferencial-item p { font-size: 0.75rem; color: #6d4c41; }
+  .equipe-section { margin-bottom: 40px; }
+  .equipe-section h3 { text-align: center; font-size: 1.5rem; color: #5d4037; margin-bottom: 25px; }
+  .equipe-grid { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
+  .membro-card { text-align: center; padding: 20px; background: white; border-radius: 20px; min-width: 160px; transition: transform 0.3s; }
+  .membro-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+  .membro-avatar { width: 90px; height: 90px; background: linear-gradient(135deg, #eaddca, #d7ccc8); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; }
+  .membro-avatar i { font-size: 2.2rem; color: #5d4037; }
+  .membro-card h4 { font-size: 1rem; }
+  .membro-card p { font-size: 0.75rem; color: #8d6e63; }
+  .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-bottom: 40px; }
+  .info-card { background: white; border-radius: 20px; padding: 25px; text-align: center; transition: transform 0.3s; }
+  .info-card:hover { transform: translateY(-5px); }
+  .info-card i { font-size: 2rem; color: #5d4037; margin-bottom: 10px; display: inline-block; }
+  .info-card h3 { font-size: 1.2rem; margin: 12px 0; }
+  .info-card p { color: #6d4c41; font-size: 0.85rem; }
+  .info-card .cidade { font-weight: 500; color: #5d4037; margin-top: 8px; }
+  @media (max-width: 768px) { .sobre-hero h2 { font-size: 1.3rem; } .diferenciais-section { padding: 20px; } .membro-card { min-width: 130px; padding: 15px; } .membro-avatar { width: 70px; height: 70px; } .membro-avatar i { font-size: 1.6rem; } }
+</style>
+
+<script>
+  // Dados padrão (caso não haja nada salvo)
+  const dadosPadrao = {
+    tituloHistoria: "📖 Nossa História",
+    textoHistoria: "O Lively Coffee nasceu do sonho de um casal, Luís Otávio e Vinicius, que decidiram unir forças para construir algo próprio. Sentindo falta de um lugar acolhedor e completo na cidade onde viviam, eles imaginaram um espaço que fosse muito mais que uma cafeteria. Foi assim que, com muito planejamento e paixão, o Lively Coffee ganhou vida, trazendo consigo a proposta de unir o melhor do café, da literatura e do contato com a natureza.",
+    tituloMissao: "🎯 Nossa Missão",
+    textoMissao: "Proporcionar uma experiência única onde cada cliente se sinta acolhido, oferecendo cafés especiais, livros inspiradores e um ambiente verde que convida ao relaxamento e à contemplação.",
+    tituloValores: "✨ Nossos Valores",
+    valores: [
+      { icon: "fa-mug-hot", titulo: "Paixão", desc: "Fazemos tudo com amor e dedicação" },
+      { icon: "fa-hand-sparkles", titulo: "Qualidade", desc: "Selecionamos os melhores produtos para você" },
+      { icon: "fa-users", titulo: "Acolhimento", desc: "Um lugar onde todos se sentem em casa" },
+      { icon: "fa-leaf", titulo: "Sustentabilidade", desc: "Respeito à natureza e ao meio ambiente" },
+      { icon: "fa-book", titulo: "Cultura", desc: "Incentivo à leitura e ao conhecimento" }
+    ],
+    tituloDiferenciais: "🌟 O que nos torna especiais",
+    diferenciais: [
+      { icon: "fa-mug-hot", titulo: "Café Especial", desc: "Grãos selecionados e preparo artesanal" },
+      { icon: "fa-book-open", titulo: "Livraria", desc: "Um lugar para ler e se informar" },
+      { icon: "fa-seedling", titulo: "Área Verde", desc: "Se vislumbrar com as plantas e a natureza" },
+      { icon: "fa-music", titulo: "Ambiente Aconchegante", desc: "Música ambiente e decoração acolhedora" }
+    ],
+    tituloEquipe: "👥 Nossa Equipe",
+    equipe: [
+      { nome: "Luís Otávio", cargo: "Fundador" },
+      { nome: "Vinicius", cargo: "Fundador" },
+      { nome: "Lyvia", cargo: "Equipe" }
+    ],
+    cidade: "Teófilo Otoni, MG",
+    textoLocal: "Estamos localizados no coração de",
+    tituloPlanos: "🔮 Planos para o Futuro",
+    textoPlanos: "Nosso sonho é levar um pouco do conforto e da experiência única do Lively Coffee para outras cidades.",
+    fraseAssinatura: "Levar aconchego por onde passamos"
+  };
+
+  let dados = {};
+
+  async function carregar() {
+    let saved = null;
+    try {
+      const response = await fetch('data/db.json');
+      if (response.ok) {
+        const completo = await response.json();
+        if (completo && Object.keys(completo).length > 0) {
+          saved = JSON.stringify(completo);
+          localStorage.setItem('livelycoffee_completo', saved);
+        }
+      }
+    } catch (e) {
+      console.warn("Falha ao buscar db.json - usando localStorage.");
+    }
+
+    if (!saved) {
+      saved = localStorage.getItem('livelycoffee_completo');
+    }
+
+    if (saved) {
+      try {
+        const completo = JSON.parse(saved);
+        dados = completo.sobre || dadosPadrao;
+        if (!dados.valores || !Array.isArray(dados.valores) || dados.valores.length === 0) {
+          dados = dadosPadrao;
+        }
+        atualizarFooter(completo.config);
+      } catch (err) {
+        dados = dadosPadrao;
+      }
+    } else {
+      const salvo = localStorage.getItem('livelycoffee_sobre');
+      if (salvo) {
+        try {
+          dados = JSON.parse(salvo);
+          if (!dados.valores || !Array.isArray(dados.valores) || dados.valores.length === 0) {
+            dados = dadosPadrao;
+          }
+        } catch (e) {
+          dados = dadosPadrao;
+        }
+      } else {
+        dados = dadosPadrao;
+      }
+    }
+    renderizar();
+  }
+
+  function atualizarFooter(config) {
+    if (!config) return;
+    const nomeNode = document.getElementById('footer-nome');
+    const phoneNode = document.getElementById('footer-telefone');
+    const emailNode = document.getElementById('footer-email');
+    const emailLinkNode = document.getElementById('footer-email-link');
+    const horarioNode = document.getElementById('footer-horario');
+
+    if (nomeNode) nomeNode.textContent = config.nomeLoja || "Lively Coffee";
+    if (phoneNode) phoneNode.textContent = config.telefone || "(11) 99999-9999";
+    if (emailNode) emailNode.textContent = config.email || "contato@livelycoffee.com";
+    if (emailLinkNode) emailLinkNode.href = `mailto:${config.email || "contato@livelycoffee.com"}`;
+    if (horarioNode) horarioNode.innerHTML = config.horario || "Seg-Sex: 08h - 22h";
+  }
+
+  function renderizar() {
+    const container = document.getElementById('sobre-container');
+    
+    const valoresHtml = dados.valores.map(v => `
+      <div class="valor-card"><i class="fas ${v.icon}"></i><h4>${v.titulo}</h4><p>${v.desc}</p></div>
+    `).join('');
+    
+    const diferenciaisHtml = dados.diferenciais.map(d => `
+      <div class="diferencial-item"><i class="fas ${d.icon}"></i><h4>${d.titulo}</h4><p>${d.desc}</p></div>
+    `).join('');
+    
+    const equipeHtml = dados.equipe.map(e => `
+      <div class="membro-card"><div class="membro-avatar"><i class="fas fa-user"></i></div><h4>${e.nome}</h4><p>${e.cargo}</p></div>
+    `).join('');
+    
+    container.innerHTML = `
+      <div class="sobre-hero"><h2>☕ Sobre o Lively Coffee</h2><p>Um espaço onde café, livros e natureza se encontram para criar momentos únicos</p></div>
+      <div class="historia-grid"><div class="historia-card"><i class="fas fa-tree"></i><h3>${dados.tituloHistoria}</h3><p>${dados.textoHistoria}</p></div><div class="historia-card"><i class="fas fa-bullseye"></i><h3>${dados.tituloMissao}</h3><p>${dados.textoMissao}</p></div></div>
+      <div class="valores-section"><h3>${dados.tituloValores}</h3><div class="valores-grid">${valoresHtml}</div></div>
+      <div class="diferenciais-section"><h3>${dados.tituloDiferenciais}</h3><div class="diferenciais-grid">${diferenciaisHtml}</div></div>
+      <div class="equipe-section"><h3>${dados.tituloEquipe}</h3><div class="equipe-grid">${equipeHtml}</div></div>
+      <div class="info-grid"><div class="info-card"><i class="fas fa-map-marker-alt"></i><h3>📍 Onde Estamos</h3><p>${dados.textoLocal}</p><p class="cidade"><i class="fas fa-city"></i> ${dados.cidade}</p><p style="margin-top:10px;">Venha nos fazer uma visita!</p></div><div class="info-card"><i class="fas fa-chart-line"></i><h3>${dados.tituloPlanos}</h3><p>${dados.textoPlanos}</p><p style="margin-top:10px; font-style:italic;">"${dados.fraseAssinatura}"</p></div></div>
+    `;
+  }
+
+  // Menu lateral
+  const btnMenu = document.getElementById('btn-menu');
+  const sidebar = document.getElementById('sidebar');
+
+  btnMenu?.addEventListener('click', (e) => { e.stopPropagation(); sidebar?.classList.toggle('active'); });
+  document.addEventListener('click', (e) => { if (sidebar && !sidebar.contains(e.target) && !btnMenu?.contains(e.target)) sidebar.classList.remove('active'); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') sidebar?.classList.remove('active'); });
+
+  carregar();
+</script>
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lively Coffee - Área Verde</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .areaverde-layout { display: grid; grid-template-columns: 1fr 320px; gap: 30px; align-items: start; }
+    .info-sidebar { position: sticky; top: 85px; background: linear-gradient(135deg, #e8f5e9, #c8e6c9); border-radius: 16px; padding: 20px; border: 1px solid rgba(67,160,71,0.3); max-height: 70vh; overflow-y: auto; }
+    .info-sidebar .info-header { border-bottom: 2px solid #2e7d32; padding-bottom: 12px; margin-bottom: 15px; }
+    .info-sidebar .info-header h3 { font-size: 1.1rem; color: #2e7d32; margin-bottom: 4px; }
+    .info-nome-cientifico { font-size: 0.75rem; color: #558b2f; font-style: italic; }
+    .info-content { line-height: 1.6; color: #1b5e20; text-align: justify; font-size: 0.85rem; margin-bottom: 15px; }
+    .info-cuidados { background: rgba(255,255,255,0.6); border-radius: 12px; padding: 12px; margin-top: 10px; }
+    .info-cuidados h4 { color: #2e7d32; font-size: 0.85rem; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+    .info-cuidados ul { list-style: none; padding-left: 0; }
+    .info-cuidados li { font-size: 0.75rem; padding: 4px 0; display: flex; align-items: center; gap: 8px; color: #33691e; }
+    .info-cuidados li i { width: 20px; color: #43a047; }
+    .empty-info { text-align: center; padding: 40px 20px; color: #81c784; }
+    .empty-info i { font-size: 2.5rem; margin-bottom: 12px; color: #a5d6a7; }
+    .plant-card.selected { border: 2px solid #2e7d32; transform: scale(1.02); }
+    @media (max-width: 768px) { .areaverde-layout { grid-template-columns: 1fr; } .info-sidebar { position: static; margin-top: 20px; max-height: none; } }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🌿 Lively Coffee</h1>
+</header>
+
+<button id="btn-menu"><i class="fas fa-bars"></i> MENU</button>
+
+<aside class="sidebar" id="sidebar">
+  <h3><i class="fas fa-compass"></i> Explorar</h3>
+  <ul>
+    <li><a href="index.html"><i class="fas fa-home"></i> Início</a></li>
+    <li><a href="cardapio.html"><i class="fas fa-mug-hot"></i> Cardápio</a></li>
+    <li><a href="livraria.html"><i class="fas fa-book"></i> Livraria</a></li>
+    <li><a href="areaverde.html"><i class="fas fa-leaf"></i> Área Verde</a></li>
+    <li><a href="sobrenos.html"><i class="fas fa-heart"></i> Sobre Nós</a></li>
+  </ul>
+  <div class="sidebar-divider"></div>
+  <ul class="sidebar-admin">
+    <li><a href="admin/index.html"><i class="fas fa-user-cog"></i> Admin</a></li>
+    <li><a href="admin/cozinha.html"><i class="fas fa-utensils"></i> Cozinha</a></li>
+  </ul>
+</aside>
+
+<main class="content">
+  <div class="page-header">
+    <h2>🌱 Área Verde</h2>
+    <p>Conheça as plantas que tornam nosso espaço mais acolhedor e vivo</p>
+  </div>
+
+  <div class="search-box">
+    <input type="text" id="search-input" placeholder="🔍 Buscar planta por nome...">
+  </div>
+
+  <div class="categories">
+    <button class="cat-btn active" data-category="todos">Todas</button>
+    <button class="cat-btn" data-category="internas">🌿 Internas</button>
+    <button class="cat-btn" data-category="externas">🌳 Externas</button>
+    <button class="cat-btn" data-category="suculentas">🌵 Suculentas</button>
+    <button class="cat-btn" data-category="aromaticas">🌿 Aromáticas</button>
+    <button class="cat-btn" data-category="ornamentais">🌸 Ornamentais</button>
+  </div>
+
+  <div class="areaverde-layout">
+    <div class="plants-section">
+      <div class="plants-grid" id="plants-container"></div>
+    </div>
+    <div class="info-sidebar" id="info-sidebar">
+      <div class="empty-info">
+        <i class="fas fa-seedling"></i>
+        <p>🌿 Clique em uma planta<br>para saber mais sobre ela</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-content">
+    <div class="footer-section"><h4 id="footer-nome">Lively Coffee</h4><p id="footer-desc">Café, livros e natureza em um só lugar.</p><div class="social-links"><a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a><a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook"></i></a><a href="https://web.whatsapp.com" target="_blank"><i class="fab fa-whatsapp"></i></a></div></div>
+    <div class="footer-section"><h4>Horário</h4><p id="footer-horario">Seg-Sex: 08h - 22h<br>Sáb-Dom: 09h - 20h</p></div>
+    <div class="footer-section"><h4>Contato</h4><p id="footer-contato"><i class="fas fa-phone"></i> <span id="footer-telefone">(11) 99999-9999</span><br><a id="footer-email-link" href="mailto:contato@livelycoffee.com" style="color: inherit; text-decoration: none;"><i class="fas fa-envelope"></i> <span id="footer-email">contato@livelycoffee.com</span></a></p></div>
+  </div>
+  <div class="copyright"><p>&copy; 2024 Lively Coffee - Todos os direitos reservados.</p></div>
+</footer>
+
+<script>
+  let plantas = [];
+  let plantaSelecionada = null;
+  let categoriaAtual = "todos";
+  let termoBusca = "";
+
+  async function carregarDados() {
+    let saved = null;
+    try {
+      const response = await fetch('data/db.json');
+      if (response.ok) {
+        const completo = await response.json();
+        if (completo && Object.keys(completo).length > 0) {
+          saved = JSON.stringify(completo);
+          localStorage.setItem('livelycoffee_completo', saved);
+        }
+      }
+    } catch (e) {
+      console.warn("Falha ao buscar db.json - usando localStorage.");
+    }
+
+    if (!saved) {
+      saved = localStorage.getItem('livelycoffee_completo');
+    }
+
+    if (saved) {
+      const dadosCompletos = JSON.parse(saved);
+      plantas = dadosCompletos.plantas || [];
+      
+      // Atualizar footer
+      document.getElementById('footer-nome').textContent = dadosCompletos.config?.nomeLoja || "Lively Coffee";
+      document.getElementById('footer-telefone').textContent = dadosCompletos.config?.telefone || "(11) 99999-9999";
+      const email = dadosCompletos.config?.email || "contato@livelycoffee.com";
+      document.getElementById('footer-email').textContent = email;
+      const emailLink = document.getElementById('footer-email-link');
+      if (emailLink) emailLink.href = `mailto:${email}`;
+      document.getElementById('footer-horario').innerHTML = dadosCompletos.config?.horario || "Seg-Sex: 08h - 22h<br>Sáb-Dom: 09h - 20h";
+    } else {
+      plantas = [
+        { id: 1, nome: "Samambaia Americana", nomeCientifico: "Nephrolepis exaltata", categoria: "internas", imagem: "images/samambaia.jpg", beneficio: "Purifica o ar e aumenta a umidade", descricao: "A samambaia é uma planta clássica para ambientes internos...", cuidados: { luz: "Luz indireta ou meia-sombra", agua: "Regar 2 a 3 vezes por semana", solo: "Rico em matéria orgânica", temperatura: "18°C a 24°C" }, curiosidade: "É uma das plantas mais eficientes na remoção de poluentes do ar." },
+        { id: 2, nome: "Espada de São Jorge", nomeCientifico: "Sansevieria trifasciata", categoria: "internas", imagem: "images/espada.jpg", beneficio: "Purifica o ar e traz proteção energética", descricao: "Planta resistente e de fácil cultivo...", cuidados: { luz: "Meia-sombra ou luz indireta", agua: "Regar a cada 15 dias", solo: "Bem drenado", temperatura: "15°C a 30°C" }, curiosidade: "É conhecida como 'planta da sorte'." },
+        { id: 3, nome: "Jiboia", nomeCientifico: "Epipremnum aureum", categoria: "internas", imagem: "images/jiboia.jpg", beneficio: "Trepadeira ornamental", descricao: "Planta trepadeira com folhas variegadas...", cuidados: { luz: "Luz indireta brilhante", agua: "Regar quando solo seco", solo: "Fértil e bem drenado", temperatura: "18°C a 29°C" }, curiosidade: "Em ambientes escuros, perde a variegatura." },
+        { id: 4, nome: "Lavanda", nomeCientifico: "Lavandula angustifolia", categoria: "aromaticas", imagem: "images/lavanda.jpg", beneficio: "Aroma relaxante", descricao: "Planta aromática conhecida por seu perfume suave...", cuidados: { luz: "Sol pleno", agua: "Regar moderadamente", solo: "Bem drenado", temperatura: "15°C a 25°C" }, curiosidade: "Óleo essencial usado em aromaterapia." },
+        { id: 5, nome: "Echeveria (Suculenta)", nomeCientifico: "Echeveria elegans", categoria: "suculentas", imagem: "images/echeveria.jpg", beneficio: "Fácil manutenção e beleza ornamental", descricao: "Uma suculenta em forma de roseta, ideal para pequenos vasos e arranjos decorativos.", cuidados: { luz: "Sol pleno ou luz solar direta", agua: "Regar apenas quando o solo estiver completamente seco", solo: "Bem drenado, arenoso", temperatura: "15°C a 28°C" }, curiosidade: "Armazena água em suas folhas carnudas para sobreviver a períodos de seca." },
+        { id: 6, nome: "Bromélia Vermelha", nomeCientifico: "Guzmania lingulata", categoria: "ornamentais", imagem: "images/bromelia.jpg", beneficio: "Traz cor e exotismo ao ambiente", descricao: "Planta tropical de folhas longas e uma inflorescência central vermelha vibrante de longa duração.", cuidados: { luz: "Luz indireta brilhante", agua: "Regar o centro da roseta (copo) com moderação", solo: "Fértil, leve e bem drenado", temperatura: "18°C a 27°C" }, curiosidade: "Na natureza, acumulam água da chuva no centro das folhas, servindo de micro-habitat para pequenos anfíbios." },
+        { id: 7, nome: "Hortelã", nomeCientifico: "Mentha spicata", categoria: "aromaticas", imagem: "images/hortela.jpg", beneficio: "Uso culinário e aroma refrescante", descricao: "Erva aromática vigorosa, amplamente utilizada em chás, sobremesas e sucos.", cuidados: { luz: "Sol pleno ou meia-sombra", agua: "Regar frequentemente mantendo o solo úmido", solo: "Rico em nutrientes e úmido", temperatura: "13°C a 25°C" }, curiosidade: "Além de culinária, possui propriedades digestivas e calmantes comprovadas." },
+        { id: 8, nome: "Ficus Lirata", nomeCientifico: "Ficus lyrata", categoria: "internas", imagem: "images/ficus.jpg", beneficio: "Visual moderno e elegante", descricao: "Árvore de interior muito popular, com grandes folhas verdes em formato de lira.", cuidados: { luz: "Luz indireta brilhante e abundante", agua: "Regar quando a superfície do solo estiver seca", solo: "Rico e com excelente drenagem", temperatura: "18°C a 25°C" }, curiosidade: "É originária das florestas tropicais da África Ocidental." },
+        { id: 9, nome: "Cacto Mandacaru", nomeCientifico: "Cereus jamacaru", categoria: "suculentas", imagem: "images/cacto.jpg", beneficio: "Resistência extrema e presença marcante", descricao: "Cacto nativo brasileiro, cresce verticalmente e simboliza a resistência do sertão.", cuidados: { luz: "Sol pleno direto", agua: "Regas esporádicas e bem espaçadas", solo: "Arenoso, altamente drenável", temperatura: "20°C a 35°C" }, curiosidade: "Sua floração ocorre durante a noite e dura apenas algumas horas antes de murchar ao amanhecer." }
+      ];
+    }
+    renderPlantas();
+  }
+
+  function getCategoriaNome(categoria) {
+    const categorias = { internas: "Interna", externas: "Externa", suculentas: "Suculenta", aromaticas: "Aromática", ornamentais: "Ornamental" };
+    return categorias[categoria] || categoria;
+  }
+
+  function renderPlantas() {
+    const container = document.getElementById('plants-container');
+    let filtrados = plantas;
+    if (categoriaAtual !== "todos") {
+      filtrados = filtrados.filter(p => p.categoria === categoriaAtual);
+    }
+    if (termoBusca) {
+      filtrados = filtrados.filter(p => p.nome.toLowerCase().includes(termoBusca) || (p.nomeCientifico && p.nomeCientifico.toLowerCase().includes(termoBusca)));
+    }
+    
+    if (filtrados.length === 0) {
+      container.innerHTML = '<p style="text-align:center; padding:40px;">Nenhuma planta encontrada.</p>';
+      return;
+    }
+    
+    container.innerHTML = filtrados.map(p => `
+      <div class="plant-card ${plantaSelecionada?.id === p.id ? 'selected' : ''}" onclick="selecionarPlanta(${p.id})">
+        <img src="${p.imagem}" alt="${p.nome}" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'300\' viewBox=\'0 0 100 100\'><rect width=\'100%\' height=\'100%\' fill=\'%23e8f5e9\'/><text x=\'50%\' y=\'55%\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-size=\'40\'>🌿</text></svg>'">
+        <div class="plant-info">
+          <h3>${p.nome}</h3>
+          <div class="plant-nome-cientifico">${p.nomeCientifico || ''}</div>
+          <div class="plant-beneficio"><i class="fas fa-heart"></i> ${p.beneficio || ''}</div>
+          <span class="badge">${getCategoriaNome(p.categoria)}</span>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function selecionarPlanta(id) {
+    plantaSelecionada = plantas.find(p => p.id === id);
+    renderPlantas();
+    
+    const infoDiv = document.getElementById('info-sidebar');
+    infoDiv.innerHTML = `
+      <div class="info-header">
+        <h3><i class="fas fa-leaf"></i> ${plantaSelecionada.nome}</h3>
+        <div class="info-nome-cientifico">${plantaSelecionada.nomeCientifico || ''}</div>
+      </div>
+      <div class="info-content">
+        <p>${plantaSelecionada.descricao || 'Descrição não disponível.'}</p>
+      </div>
+      <div class="info-cuidados">
+        <h4><i class="fas fa-hand-holding-heart"></i> Cuidados Essenciais</h4>
+        <ul>
+          <li><i class="fas fa-sun"></i> <strong>Luz:</strong> ${plantaSelecionada.cuidados?.luz || 'Não informado'}</li>
+          <li><i class="fas fa-tint"></i> <strong>Água:</strong> ${plantaSelecionada.cuidados?.agua || 'Não informado'}</li>
+          <li><i class="fas fa-seedling"></i> <strong>Solo:</strong> ${plantaSelecionada.cuidados?.solo || 'Não informado'}</li>
+          <li><i class="fas fa-thermometer-half"></i> <strong>Temperatura:</strong> ${plantaSelecionada.cuidados?.temperatura || 'Não informado'}</li>
+        </ul>
+      </div>
+      <div class="info-cuidados" style="margin-top:0;">
+        <h4><i class="fas fa-lightbulb"></i> Curiosidade</h4>
+        <p>${plantaSelecionada.curiosidade || 'Curiosidade não disponível.'}</p>
+      </div>
+    `;
+  }
+
+  // Eventos
+  document.querySelectorAll('.cat-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      categoriaAtual = btn.dataset.category;
+      renderPlantas();
+    });
+  });
+  
+  document.getElementById('search-input').addEventListener('input', (e) => {
+    termoBusca = e.target.value.toLowerCase();
+    renderPlantas();
+  });
+
+  // Menu lateral
+  const btnMenu = document.getElementById('btn-menu');
+  const sidebar = document.getElementById('sidebar');
+
+  btnMenu?.addEventListener('click', (e) => { 
+    e.stopPropagation(); 
+    sidebar?.classList.toggle('active'); 
+  });
+  
+  document.addEventListener('click', (e) => { 
+    if (sidebar && !sidebar.contains(e.target) && !btnMenu?.contains(e.target)) {
+      sidebar.classList.remove('active');
+    }
+  });
+  
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      sidebar?.classList.remove('active');
+    }
+  });
+
+  carregarDados();
+</script>
+</body>
+</html>
