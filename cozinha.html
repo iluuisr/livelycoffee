@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lively Coffee - Monitor de Pedidos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    /* Estilos Premium para o Painel da Cozinha / Pedidos */
+    .cozinha-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      animation: fadeInUp 0.5s ease;
+    }
+
+    .cozinha-header-card {
+      background: linear-gradient(135deg, #5d4037, #3e2723);
+      color: #fff8f0;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 10px 25px rgba(62,39,35,0.15);
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .cozinha-header-title h2 {
+      font-size: 1.8rem;
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+
+    .cozinha-header-title p {
+      font-size: 0.85rem;
+      opacity: 0.8;
+    }
+
+    .cozinha-controls {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-cozinha {
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: #f5f5dc;
+      color: #3e2723;
+    }
+
+    .btn-primary:hover {
+      background: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255,255,255,0.2);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #fff8f0;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .btn-danger {
+      background: #d32f2f;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #b71c1c;
+      transform: translateY(-2px);
+    }
+
+    .btn-success {
+      background: #2e7d32;
+      color: white;
+    }
+
+    .btn-success:hover {
+      background: #1b5e20;
+      transform: translateY(-2px);
+    }
+
+    .btn-warning {
+      background: #f57c00;
+      color: white;
+    }
+
+    .btn-warning:hover {
+      background: #e65100;
+      transform: translateY(-2px);
+    }
+
+    /* Abas de Navegação Interna */
+    .cozinha-tabs {
+      display: flex;
+      gap: 8px;
+      border-bottom: 2px dashed rgba(93, 64, 55, 0.2);
+      padding-bottom: 10px;
+      margin-bottom: 30px;
+      overflow-x: auto;
+    }
+
+    .cozinha-tab-btn {
+      padding: 10px 18px;
+      background: transparent;
+      border: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #8d6e63;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 10px;
+      white-space: nowrap;
+      transition: all 0.3s;
+    }
+
+    .cozinha-tab-btn:hover {
+      background: rgba(93, 64, 55, 0.05);
+      color: #5d4037;
+    }
+
+    .cozinha-tab-btn.active {
+      background: #5d4037;
+      color: #f5efe6;
+    }
+
+    /* Conteúdo das Abas */
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards de Pedidos */
+    .pedidos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+
+    .pedido-card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+      border: 1px solid rgba(226, 215, 200, 0.5);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative;
+    }
+
+    .pedido-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 25px rgba(93, 64, 55, 0.1);
+    }
+
+    .pedido-card.status-pendente {
+      border-top: 5px solid #f57c00;
+    }
+
+    .pedido-card.status-preparo {
+      border-top: 5px solid #1976d2;
+    }
+
+    .pedido-card.status-enviado {
+      border-top: 5px solid #673ab7;
+    }
+
+    .pedido-card.status-concluido {
+      border-top: 5px solid #388e3c;
+    }
+
+    .pedido-header {
+      padding: 15px 20px;
+      background: #faf7f2;
+      border-bottom: 1px solid rgba(93,64,55,0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .pedido-id {
+      font-weight: 700;
+      color: #5d4037;
+      font-size: 0.9rem;
+    }
+
+    .pedido-data {
+      font-size: 0.7rem;
+      color: #8d6e63;
+    }
+
+    .pedido-body {
+      padding: 20px;
+      flex: 1;
+    }
+
+    .pedido-mesa-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      background: #efebe9;
+      color: #5d4037;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-bottom: 12px;
+    }
+
+    .pedido-entrega-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      background: #e8eaf6;
+      color: #3f51b5;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-bottom: 12px;
+    }
+
+    .pedido-entrega-badge.retirada {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    .pedido-status-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+    }
+
+    .status-badge-pendente { background: #ffe0b2; color: #e65100; }
+    .status-badge-preparo { background: #bbdefb; color: #0d47a1; }
+    .status-badge-enviado { background: #e1bee7; color: #4a148c; }
+    .status-badge-concluido { background: #c8e6c9; color: #1b5e20; }
+
+    .pedido-itens-list {
+      list-style: none;
+      margin-bottom: 15px;
+    }
+
+    .pedido-itens-list li {
+      padding: 6px 0;
+      border-bottom: 1px dashed rgba(226,215,200,0.5);
+      font-size: 0.8rem;
+      display: flex;
+      justify-content: space-between;
+      color: #4e342e;
+    }
+
+    .pedido-itens-list li:last-child {
+      border-bottom: none;
+    }
+
+    .pedido-obs {
+      background: #fff8e1;
+      border-left: 3px solid #ffe082;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      color: #795548;
+      margin-bottom: 15px;
+      font-style: italic;
+    }
+
+    .pedido-endereco-box {
+      background: #f3f8f2;
+      border-left: 3px solid #81c784;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      color: #2e7d32;
+      margin-bottom: 15px;
+    }
+
+    .pedido-endereco-box strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .pedido-total {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #5d4037;
+      text-align: right;
+      border-top: 1px solid rgba(93,64,55,0.08);
+      padding-top: 10px;
+      margin-top: 10px;
+    }
+
+    .pedido-footer {
+      padding: 15px 20px;
+      background: #faf7f2;
+      border-top: 1px solid rgba(93,64,55,0.08);
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      background: white;
+      border-radius: 20px;
+      border: 1px dashed rgba(93,64,55,0.2);
+      color: #8d6e63;
+      margin-bottom: 30px;
+    }
+
+    .empty-state i {
+      font-size: 3rem;
+      color: #d7ccc8;
+      margin-bottom: 15px;
+    }
+
+    /* Notificações Toasts */
+    .toast-container {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      z-index: 3000;
+    }
+
+    .cozinha-toast {
+      background: #5d4037;
+      color: #f5efe6;
+      padding: 12px 24px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      margin-top: 10px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: slideInToast 0.3s ease forwards;
+    }
+
+    @keyframes slideInToast {
+      from { transform: translateX(120%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    /* Estilos Customizados para o Login da Cozinha */
+    .cozinha-login-card {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 10px 30px rgba(51,105,30,0.15);
+      width: 100%;
+      max-width: 400px;
+      border: 1px solid rgba(197, 225, 165, 0.6);
+      text-align: center;
+    }
+    
+    .cozinha-login-input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 2px solid #c5e1a5 !important;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.3s;
+    }
+    
+    .cozinha-login-input:focus {
+      border-color: #33691e !important;
+      box-shadow: 0 0 0 3px rgba(51, 105, 30, 0.2) !important;
+    }
+
+    .btn-login-cozinha {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: bold;
+      justify-content: center;
+      background: #33691e;
+      color: #f1f8e9;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-login-cozinha:hover {
+      background: #2e601b;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(51, 105, 30, 0.25);
+    }
+  </style>
+</head>
+<body>
+
+<!-- TELA DE LOGIN RESTRICT -->
+<div id="cozinha-login-container" style="display: none; align-items: center; justify-content: center; min-height: 100vh; background: radial-gradient(circle at 50% 30%, #f1f8e9 0%, #dcedc8 70%, #c5e1a5 100%); font-family: 'Poppins', sans-serif;">
+  <div class="cozinha-login-card">
+    <div style="font-size: 3rem; color: #33691e; margin-bottom: 15px;">🍳</div>
+    <h2 style="font-size: 1.4rem; color: #33691e; margin-bottom: 8px; font-weight: 700;">Lively Coffee</h2>
+    <p style="font-size: 0.8rem; color: #558b2f; margin-bottom: 25px;">Monitor de Pedidos - Cozinha</p>
+    
+    <form id="login-form" onsubmit="efetuarLogin(event)">
+      <div class="form-group" style="text-align: left; margin-bottom: 18px;">
+        <label for="login-username" style="display: block; font-size: 0.75rem; font-weight: 600; color: #33691e; margin-bottom: 6px;">Usuário</label>
+        <input type="text" id="login-username" class="cozinha-login-input" placeholder="Digite o usuário da cozinha" required>
+      </div>
+      <div class="form-group" style="text-align: left; margin-bottom: 20px;">
+        <label for="login-password" style="display: block; font-size: 0.75rem; font-weight: 600; color: #33691e; margin-bottom: 6px;">Senha</label>
+        <input type="password" id="login-password" class="cozinha-login-input" placeholder="Digite a senha da cozinha" required>
+      </div>
+      
+      <div id="login-error-msg" style="color: #c62828; font-size: 0.75rem; margin-bottom: 15px; display: none; font-weight: 500;">
+        <i class="fas fa-exclamation-circle"></i> Usuário ou senha incorretos!
+      </div>
+      
+      <button type="submit" class="btn-login-cozinha">
+        <i class="fas fa-sign-in-alt"></i> Entrar
+      </button>
+    </form>
+    
+    <div style="margin-top: 20px;">
+      <a href="../index.html" style="font-size: 0.75rem; color: #8d6e63; text-decoration: none; font-weight: 600; transition: color 0.2s;"><i class="fas fa-arrow-left"></i> Voltar ao site</a>
+    </div>
+  </div>
+</div>
+
+<!-- CONTAINER PRINCIPAL DO MONITOR -->
+<div id="cozinha-dashboard-container" style="display: none;">
+
+<header>
+  <h1>🍳 Monitor de Pedidos</h1>
+</header>
+
+<button id="btn-menu"><i class="fas fa-bars"></i> MENU</button>
+
+<aside class="sidebar" id="sidebar">
+  <h3><i class="fas fa-compass"></i> Explorar</h3>
+  <ul>
+    <li><a href="../index.html"><i class="fas fa-home"></i> Início</a></li>
+    <li><a href="../cardapio.html"><i class="fas fa-mug-hot"></i> Cardápio</a></li>
+    <li><a href="../livraria.html"><i class="fas fa-book"></i> Livraria</a></li>
+    <li><a href="../areaverde.html"><i class="fas fa-leaf"></i> Área Verde</a></li>
+    <li><a href="../sobrenos.html"><i class="fas fa-heart"></i> Sobre Nós</a></li>
+  </ul>
+  <div class="sidebar-divider"></div>
+  <ul class="sidebar-admin">
+    <li><a href="index.html"><i class="fas fa-user-cog"></i> Admin Dashboard</a></li>
+    <li><a href="cozinha.html"><i class="fas fa-utensils"></i> Monitor de Pedidos</a></li>
+  </ul>
+</aside>
+
+<main class="content">
+  <div class="cozinha-container">
+    
+    <!-- Cabeçalho de Controle -->
+    <div class="cozinha-header-card">
+      <div class="cozinha-header-title">
+        <h2>Painel de Pedidos</h2>
+        <p>Acompanhe e despache os pedidos da Cozinha e da Livraria em tempo real</p>
+      </div>
+      <div class="cozinha-controls">
+        <button class="btn-cozinha btn-secondary" id="btn-sound" onclick="toggleSound()">
+          <i class="fas fa-volume-up"></i> Som: Ativado
+        </button>
+        <button class="btn-cozinha btn-danger" id="btn-clear-history" onclick="limparHistorico()" style="display: none;">
+          <i class="fas fa-trash-alt"></i> Limpar Histórico
+        </button>
+        <button class="btn-cozinha btn-primary" onclick="window.location.href='../index.html'">
+          <i class="fas fa-external-link-alt"></i> Voltar ao Site
+        </button>
+        <button class="btn-cozinha btn-danger" onclick="logoutAdmin()">
+          <i class="fas fa-sign-out-alt"></i> Sair
+        </button>
+      </div>
+    </div>
+
+    <!-- Navegação de Abas -->
+    <nav class="cozinha-tabs">
+      <button class="cozinha-tab-btn active" data-tab="cozinha" onclick="mudarAba('cozinha')">
+        <i class="fas fa-coffee"></i> Cozinha <span id="badge-count-cozinha" style="margin-left: 5px; background: #fff8f0; color: #5d4037; font-size: 0.7rem; padding: 2px 6px; border-radius: 10px; font-weight: 700;">0</span>
+      </button>
+      <button class="cozinha-tab-btn" data-tab="livraria" onclick="mudarAba('livraria')">
+        <i class="fas fa-book"></i> Livraria <span id="badge-count-livraria" style="margin-left: 5px; background: #fff8f0; color: #5d4037; font-size: 0.7rem; padding: 2px 6px; border-radius: 10px; font-weight: 700;">0</span>
+      </button>
+      <button class="cozinha-tab-btn" data-tab="historico" onclick="mudarAba('historico')">
+        <i class="fas fa-history"></i> Histórico de Concluídos
+      </button>
+    </nav>
+
+    <!-- ABA COZINHA -->
+    <section class="tab-content active" id="tab-cozinha">
+      <div class="pedidos-grid" id="grid-cozinha"></div>
+    </section>
+
+    <!-- ABA LIVRARIA -->
+    <section class="tab-content" id="tab-livraria">
+      <div class="pedidos-grid" id="grid-livraria"></div>
+    </section>
+
+    <!-- ABA HISTÓRICO -->
+    <section class="tab-content" id="tab-historico">
+      <div class="pedidos-grid" id="grid-historico"></div>
+    </section>
+
+  </div>
+</main>
+</div> <!-- /cozinha-dashboard-container -->
+
+<div class="toast-container" id="toast-container"></div>
+
+<script>
+  let pedidos = [];
+  let soundEnabled = true;
+  let abaAtiva = "cozinha";
+
+  // Web Audio API para bipe sonoro duplo offline
+  function playNotificationSound() {
+    if (!soundEnabled) return;
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      
+      // Primeiro Bipe (Nota Lá5)
+      const osc1 = audioCtx.createOscillator();
+      const gain1 = audioCtx.createGain();
+      osc1.type = 'sine';
+      osc1.frequency.setValueAtTime(880, audioCtx.currentTime);
+      gain1.gain.setValueAtTime(0.08, audioCtx.currentTime);
+      gain1.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+      osc1.connect(gain1);
+      gain1.connect(audioCtx.destination);
+      osc1.start();
+      osc1.stop(audioCtx.currentTime + 0.15);
+      
+      // Segundo Bipe (Nota Dó6) com pequeno atraso
+      setTimeout(() => {
+        const osc2 = audioCtx.createOscillator();
+        const gain2 = audioCtx.createGain();
+        osc2.type = 'sine';
+        osc2.frequency.setValueAtTime(1046.50, audioCtx.currentTime);
+        gain2.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain2.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+        osc2.connect(gain2);
+        gain2.connect(audioCtx.destination);
+        osc2.start();
+        osc2.stop(audioCtx.currentTime + 0.15);
+      }, 160);
+    } catch (e) {
+      console.warn("Navegador bloqueou áudio ou Web Audio API indisponível:", e);
+    }
+  }
+
+  // Toast Notification
+  function showToast(message) {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = 'cozinha-toast';
+    toast.innerHTML = `<i class="fas fa-bell"></i> ${message}`;
+    container.appendChild(toast);
+    setTimeout(() => {
+      toast.style.animation = 'fadeOut 0.4s ease forwards';
+      setTimeout(() => toast.remove(), 400);
+    }, 3500);
+  }
+
+  // Alternar som
+  function toggleSound() {
+    soundEnabled = !soundEnabled;
+    const btn = document.getElementById('btn-sound');
+    if (soundEnabled) {
+      btn.innerHTML = '<i class="fas fa-volume-up"></i> Som: Ativado';
+      btn.className = 'btn-cozinha btn-secondary';
+      showToast("Sons de notificação ativados");
+    } else {
+      btn.innerHTML = '<i class="fas fa-volume-mute"></i> Som: Desativado';
+      btn.className = 'btn-cozinha btn-danger';
+      showToast("Sons de notificação silenciados");
+    }
+  }
+
+  // Carregar dados iniciais dos pedidos do localStorage
+  function carregarPedidos() {
+    const salvo = localStorage.getItem('livelycoffee_pedidos');
+    pedidos = salvo ? JSON.parse(salvo) : [];
+    renderizarAbas();
+  }
+
+  // Salvar no localStorage
+  function salvarPedidos() {
+    localStorage.setItem('livelycoffee_pedidos', JSON.stringify(pedidos));
+  }
+
+  // Trocar de Aba
+  function mudarAba(aba) {
+    abaAtiva = aba;
+    
+    // Atualizar classe ativa nas abas do menu
+    document.querySelectorAll('.cozinha-tab-btn').forEach(btn => {
+      btn.classList.remove('active');
+      if (btn.dataset.tab === aba) btn.classList.add('active');
+    });
+
+    // Atualizar exibição dos painéis de conteúdo
+    document.querySelectorAll('.tab-content').forEach(section => {
+      section.classList.remove('active');
+      if (section.id === `tab-${aba}`) section.classList.add('active');
+    });
+
+    // Exibir/Esconder botão de limpar histórico
+    const btnClear = document.getElementById('btn-clear-history');
+    if (aba === 'historico') {
+      btnClear.style.display = 'inline-flex';
+    } else {
+      btnClear.style.display = 'none';
+    }
+
+    renderizarAbas();
+  }
+
+  // Renderizar o conteúdo conforme a aba
+  function renderizarAbas() {
+    const gridCozinha = document.getElementById('grid-cozinha');
+    const gridLivraria = document.getElementById('grid-livraria');
+    const gridHistorico = document.getElementById('grid-historico');
+
+    // Filtrar pedidos
+    const pedidosCozinha = pedidos.filter(p => p.tipo === 'cozinha' && p.status !== 'Concluido');
+    const pedidosLivraria = pedidos.filter(p => p.tipo === 'livraria' && p.status !== 'Concluido');
+    const pedidosHistorico = pedidos.filter(p => p.status === 'Concluido');
+
+    // Atualizar badges das abas
+    document.getElementById('badge-count-cozinha').textContent = pedidosCozinha.length;
+    document.getElementById('badge-count-livraria').textContent = pedidosLivraria.length;
+
+    // Renderizar Cozinha
+    if (pedidosCozinha.length === 0) {
+      gridCozinha.innerHTML = `
+        <div class="empty-state" style="grid-column: 1 / -1;">
+          <i class="fas fa-utensils"></i>
+          <h3>Fila da Cozinha Vazia</h3>
+          <p>Nenhum pedido pendente de preparação no momento.</p>
+        </div>`;
+    } else {
+      gridCozinha.innerHTML = pedidosCozinha.map(p => {
+        const cardClass = p.status === 'Preparo' ? 'status-preparo' : 'status-pendente';
+        const statusBadgeClass = p.status === 'Preparo' ? 'status-badge-preparo' : 'status-badge-pendente';
+        const statusText = p.status === 'Preparo' ? 'Em Preparo' : 'Pendente';
+        
+        return `
+          <div class="pedido-card ${cardClass}">
+            <div class="pedido-header">
+              <span class="pedido-id">${p.id}</span>
+              <span class="pedido-data">${p.data}</span>
+            </div>
+            <div class="pedido-body">
+              <span class="pedido-mesa-badge">Mesa ${p.mesa}</span>
+              <span class="pedido-status-badge ${statusBadgeClass}">${statusText}</span>
+              <ul class="pedido-itens-list">
+                ${p.itens.map(item => `
+                  <li>
+                    <span>${item.quantidade}x ${item.nome}</span>
+                    <small>R$ ${(item.preco * item.quantidade).toFixed(2)}</small>
+                  </li>
+                `).join('')}
+              </ul>
+              ${p.observacao && p.observacao !== 'Nenhuma' ? `<div class="pedido-obs"><strong>Nota:</strong> "${p.observacao}"</div>` : ''}
+              <div class="pedido-total">Total: R$ ${parseFloat(p.total).toFixed(2)}</div>
+            </div>
+            <div class="pedido-footer">
+              ${p.status === 'Pendente' ? `
+                <button class="btn-cozinha btn-warning" onclick="alterarStatus('${p.id}', 'Preparo')">
+                  <i class="fas fa-play"></i> Iniciar Preparo
+                </button>
+              ` : `
+                <button class="btn-cozinha btn-success" onclick="alterarStatus('${p.id}', 'Concluido')">
+                  <i class="fas fa-check-circle"></i> Concluir Pedido
+                </button>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Renderizar Livraria
+    if (pedidosLivraria.length === 0) {
+      gridLivraria.innerHTML = `
+        <div class="empty-state" style="grid-column: 1 / -1;">
+          <i class="fas fa-book-open"></i>
+          <h3>Fila da Livraria Vazia</h3>
+          <p>Nenhuma venda ou entrega pendente na livraria.</p>
+        </div>`;
+    } else {
+      gridLivraria.innerHTML = pedidosLivraria.map(p => {
+        const cardClass = p.status === 'Enviado' ? 'status-enviado' : 'status-pendente';
+        const statusBadgeClass = p.status === 'Enviado' ? 'status-badge-enviado' : 'status-badge-pendente';
+        const statusText = p.status === 'Enviado' ? 'Despachado' : 'Pendente';
+        const isDelivery = p.entrega && p.entrega.tipo === 'entrega';
+        const entregaBadgeClass = isDelivery ? 'pedido-entrega-badge' : 'pedido-entrega-badge retirada';
+        const entregaText = isDelivery ? '🚚 Entrega' : '📦 Retirada';
+
+        return `
+          <div class="pedido-card ${cardClass}">
+            <div class="pedido-header">
+              <span class="pedido-id">${p.id}</span>
+              <span class="pedido-data">${p.data}</span>
+            </div>
+            <div class="pedido-body">
+              <span class="${entregaBadgeClass}">${entregaText}</span>
+              <span class="pedido-status-badge ${statusBadgeClass}">${statusText}</span>
+              <ul class="pedido-itens-list">
+                ${p.itens.map(item => `
+                  <li>
+                    <span>${item.quantidade}x ${item.nome}</span>
+                    <small>R$ ${(item.preco * item.quantidade).toFixed(2)}</small>
+                  </li>
+                `).join('')}
+              </ul>
+              ${isDelivery ? `
+                <div class="pedido-endereco-box">
+                  <strong>Endereço de Entrega:</strong>
+                  <span>${p.entrega.endereco}</span><br>
+                  <span>Bairro: ${p.entrega.bairro} | CEP: ${p.entrega.cep}</span><br>
+                  <span>Cidade: ${p.entrega.cidade}</span>
+                  ${p.entrega.complemento ? `<br><small>Comp: ${p.entrega.complemento}</small>` : ''}
+                </div>
+              ` : ''}
+              <div class="pedido-total">Total: R$ ${parseFloat(p.total).toFixed(2)}</div>
+            </div>
+            <div class="pedido-footer">
+              ${p.status === 'Pendente' && isDelivery ? `
+                <button class="btn-cozinha btn-warning" onclick="alterarStatus('${p.id}', 'Enviado')">
+                  <i class="fas fa-truck"></i> Despachar
+                </button>
+              ` : `
+                <button class="btn-cozinha btn-success" onclick="alterarStatus('${p.id}', 'Concluido')">
+                  <i class="fas fa-check-circle"></i> Concluir
+                </button>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Renderizar Histórico
+    if (pedidosHistorico.length === 0) {
+      gridHistorico.innerHTML = `
+        <div class="empty-state" style="grid-column: 1 / -1;">
+          <i class="fas fa-archive"></i>
+          <h3>Histórico Vazio</h3>
+          <p>Nenhum pedido foi concluído ainda.</p>
+        </div>`;
+    } else {
+      gridHistorico.innerHTML = pedidosHistorico.map(p => {
+        const itemTypeLabel = p.tipo === 'cozinha' ? '🍳 Cozinha' : '📚 Livraria';
+        const detailTexto = p.tipo === 'cozinha' ? `Mesa ${p.mesa}` : (p.entrega && p.entrega.tipo === 'entrega' ? '🚚 Entrega' : '📦 Retirada');
+        
+        return `
+          <div class="pedido-card status-concluido">
+            <div class="pedido-header">
+              <span class="pedido-id">${p.id}</span>
+              <span class="pedido-data">${p.data}</span>
+            </div>
+            <div class="pedido-body">
+              <span class="pedido-mesa-badge" style="background:#e8f5e9; color:#2e7d32;">${itemTypeLabel} | ${detailTexto}</span>
+              <span class="pedido-status-badge status-badge-concluido">Concluído</span>
+              <ul class="pedido-itens-list">
+                ${p.itens.map(item => `
+                  <li>
+                    <span>${item.quantidade}x ${item.nome}</span>
+                    <small>R$ ${(item.preco * item.quantidade).toFixed(2)}</small>
+                  </li>
+                `).join('')}
+              </ul>
+              <div class="pedido-total">Total: R$ ${parseFloat(p.total).toFixed(2)}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+  }
+
+  // Alterar status de um pedido
+  function alterarStatus(id, novoStatus) {
+    const index = pedidos.findIndex(p => p.id === id);
+    if (index !== -1) {
+      pedidos[index].status = novoStatus;
+      salvarPedidos();
+      showToast(`Pedido ${id} atualizado para: ${novoStatus}`);
+      renderizarAbas();
+    }
+  }
+
+  // Limpar Histórico de Pedidos
+  function limparHistorico() {
+    if (confirm("Tem certeza que deseja apagar permanentemente o histórico de pedidos concluídos?")) {
+      pedidos = pedidos.filter(p => p.status !== 'Concluido');
+      salvarPedidos();
+      showToast("Histórico limpo com sucesso!");
+      renderizarAbas();
+    }
+  }
+
+  // Escutar alterações do localStorage (Storage Event Listener para sincronizar abas)
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'livelycoffee_pedidos') {
+      const oldLength = pedidos.length;
+      pedidos = e.newValue ? JSON.parse(e.newValue) : [];
+      
+      // Se novos itens foram adicionados
+      if (pedidos.length > oldLength) {
+        // Encontrar os novos pedidos para saber de onde vieram
+        const oldIds = new Set(pedidos.slice(0, oldLength).map(p => p.id));
+        const novosPedidos = pedidos.filter(p => !oldIds.has(p.id));
+        
+        novosPedidos.forEach(np => {
+          const deOnde = np.tipo === 'cozinha' ? `Mesa ${np.mesa}` : 'Livraria';
+          showToast(`🔔 Novo Pedido Recebido (${deOnde})!`);
+        });
+
+        playNotificationSound();
+      }
+      
+      renderizarAbas();
+    }
+  });
+
+  // Autenticação e Login
+  function verificarAutenticacao() {
+    const isLogged = sessionStorage.getItem('livelycoffee_cozinha_logged');
+    if (isLogged === 'true') {
+      document.getElementById('cozinha-login-container').style.display = 'none';
+      document.getElementById('cozinha-dashboard-container').style.display = 'block';
+      document.body.style.paddingTop = '80px';
+      carregarPedidos();
+    } else {
+      document.getElementById('cozinha-login-container').style.display = 'flex';
+      document.getElementById('cozinha-dashboard-container').style.display = 'none';
+      document.body.style.paddingTop = '0';
+    }
+  }
+
+  function efetuarLogin(e) {
+    e.preventDefault();
+    const user = document.getElementById('login-username').value.trim();
+    const pass = document.getElementById('login-password').value;
+    
+    if (user === 'cozinha' && pass === 'cozinha') {
+      sessionStorage.setItem('livelycoffee_cozinha_logged', 'true');
+      document.getElementById('login-error-msg').style.display = 'none';
+      verificarAutenticacao();
+      // Opcional: tenta tocar um som imediatamente para obter a autorização de áudio do navegador
+      playNotificationSound();
+    } else {
+      document.getElementById('login-error-msg').style.display = 'block';
+    }
+  }
+
+  function logoutAdmin() {
+    sessionStorage.removeItem('livelycoffee_cozinha_logged');
+    verificarAutenticacao();
+  }
+
+  // Menu lateral toggle
+  const btnMenu = document.getElementById('btn-menu');
+  const sidebar = document.getElementById('sidebar');
+
+  btnMenu?.addEventListener('click', (e) => { 
+    e.stopPropagation(); 
+    sidebar?.classList.toggle('active'); 
+  });
+  
+  document.addEventListener('click', (e) => { 
+    if (sidebar && !sidebar.contains(e.target) && !btnMenu?.contains(e.target)) {
+      sidebar.classList.remove('active');
+    }
+  });
+  
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      sidebar?.classList.remove('active');
+    }
+  });
+
+  // Inicialização
+  verificarAutenticacao();
+</script>
+</body>
+</html>
